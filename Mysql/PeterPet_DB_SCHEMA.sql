@@ -1,0 +1,54 @@
+CREATE TABLE USER (
+    Id INT NOT NULL,
+    UserId VARCHAR(45) NOT NULL,
+    Password VARCHAR(45) NOT NULL,
+    UserName VARCHAR(45) NOT NULL,
+    Email VARCHAR(45) NOT NULL,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE DOG (
+    DogId INT NOT NULL,
+    UserId INT NOT NULL,
+    DogName VARCHAR(45) NULL,
+    Breed VARCHAR(45) NULL,
+    Gender CHAR NULL,
+    Weight FLOAT NULL,
+    Photo BLOB NULL,
+    PRIMARY KEY (DogId), 
+    FOREIGN KEY (UserId) REFERENCES USER (Id)
+);
+
+CREATE TABLE IF NOT EXISTS DISPENSER (
+    DispenserId INT NOT NULL,
+    DogId INT NOT NULL,
+    Time DATETIME NOT NULL,
+    Amount INT NULL,
+    PRIMARY KEY (DispenserId),
+    FOREIGN KEY (DogId) REFERENCES DOG (DogId)
+);
+
+CREATE TABLE SENSOR (
+    SensorId INT NOT NULL,
+    DogId INT NOT NULL,
+    Time DATETIME NULL,
+    ax FLOAT NULL,
+    ay FLOAT NULL,
+    az FLOAT NULL,
+    gx FLOAT NULL,
+    gy FLOAT NULL,
+    gz FLOAT NULL,
+    decibel FLOAT NULL,
+    temp FLOAT NULL,
+    humi FLOAT NULL,
+    PRIMARY KEY (SensorId),
+    FOREIGN KEY (DogId) REFERENCES DOG (DogId)
+);
+
+CREATE TABLE Activity (
+    DogId INT NOT NULL,
+    Time DATETIME NOT NULL,
+    Type INT NULL DEFAULT 0,
+    PRIMARY KEY (DogId),
+    FOREIGN KEY (DogId) REFERENCES DOG (DogId)
+);
