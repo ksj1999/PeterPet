@@ -1,22 +1,29 @@
 CREATE TABLE USER (
-    Id INT NOT NULL,
     UserId VARCHAR(45) NOT NULL,
     Password VARCHAR(45) NOT NULL,
     UserName VARCHAR(45) NOT NULL,
     Email VARCHAR(45) NOT NULL,
-    PRIMARY KEY (Id)
+    PRIMARY KEY (UserId)
 );
 
 CREATE TABLE DOG (
     DogId INT NOT NULL,
-    UId INT NOT NULL,
+    UserId VARCHAR(45) NOT NULL,
     DogName VARCHAR(45) NULL,
     Breed VARCHAR(45) NULL,
     Gender CHAR NULL,
     Weight FLOAT NULL,
-    Photo BLOB NULL,
+    BCS VARCHAR(20) NULL,
     PRIMARY KEY (DogId), 
-    FOREIGN KEY (UId) REFERENCES USER (Id)
+    FOREIGN KEY (UserId) REFERENCES USER (UserId)
+);
+
+CREATE TABLE BCSIMAGE(
+    PhotoId INT NOT NULL,
+    DogId INT NOT NULL,
+    Photo BLOB NULl,
+    PRIMARY KEY (PhotoId), 
+    FOREIGN KEY (DogId) REFERENCES DOG (DogId)
 );
 
 CREATE TABLE  DISPENSER (
@@ -52,12 +59,14 @@ CREATE TABLE Activity (
     FOREIGN KEY (DogId) REFERENCES DOG (DogId)
 );
 
-Insert into USER values ( 100, 'yoon8720', 'king01', 'dungdunge', 'yoon8720@nate.com');
-Insert into USER values ( 101, 'kaya01', 'kwon0871', 'android369', 'kaya@gmail.com');
+Insert into USER values ( 'yoon8720', 'king01', 'dungdunge', 'yoon8720@nate.com');
+Insert into USER values ( 'kaya01', 'kwon0871', 'android369', 'kaya@gmail.com');
 
-Insert into DOG values ( 200, 100, 'dung_dung_e', 'shihtzu', 'M', 8.7, NULL);
-Insert into DOG values ( 201, 100, 'happy', 'maltese', 'M', 3.1, NULL);
-Insert into DOG values ( 202, 101, 'bbobbi', 'shihtzu', 'F', 2.7, NULL);
+Insert into DOG values ( 200, 'yoon8720', 'dung_dung_e', 'shihtzu', 'M', 8.7, 'Normal');
+Insert into DOG values ( 201, 'yoon8720', 'happy', 'maltese', 'M', 3.1, 'Obesity');
+Insert into DOG values ( 202, 'kaya01', 'bbobbi', 'shihtzu', 'F', 2.7, 'Underweight');
+
+Insert into BCSIMAGE values( 1, 200, null);
 
 Insert into DISPENSER values ( '2023-11-02 10:30:00', 200, 40 );
 Insert into DISPENSER values ( now(), 201, 20 );
