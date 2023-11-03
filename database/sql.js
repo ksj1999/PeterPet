@@ -7,10 +7,18 @@ const pool = mysql.createPool({
     port: 3306,
     user: 'root',
     password: 'gging00100!',
-    database: 'peterpet',
+    database: 'inha',
 });
 
 const promisePool = pool.promise();
+
+export const ApplyQuery = {
+    applyquery: async(Query) => {
+        const sql = Query;
+        const[result] = await promisePool.query(sql);
+        return result;
+    },
+}
 
 export const selectSql = {
     getUser: async () => {
@@ -19,12 +27,3 @@ export const selectSql = {
         return result;
     },
 }
-
-export const deleteSql = {
-    deleteUser: async (data) => {
-        console.log('delete user UserId =', data);
-        const sql = `delete from User where UserId=${data.UserId}`
-        console.log(sql);
-        await promisePool.query(sql);
-    },
-};
