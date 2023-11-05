@@ -32,6 +32,16 @@ export const selectSql = {
 
 // insert query
 export const insertSql = {
+    setSensor:async (data) => {
+        const sql = `insert into sensor values (
+            now(), ${data.ax}, ${data.ay},${data.az},
+            ${data.gx}, ${data.gy}, ${data.gz},
+            ${data.decibel}, ${data.temp}, ${data.humi}
+        )`
+        console.log(data);
+        await promisePool.query(sql);
+    },
+
     setUser: async (data) => {
         const sql = `insert into user values (
             "${data.UserId}",  "${data.Password}",  "${data.UserName}", "${data.Email}"
@@ -55,6 +65,5 @@ export const insertSql = {
         } catch (error) {
             console.error("Error inserting photo:", error);
         }
-    }
-    
+    },
 };

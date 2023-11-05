@@ -3,6 +3,7 @@ import logger from 'morgan';
 import path from 'path';
 import expressSession from "express-session";
 
+import sensorRouter from '../routes/sensor';
 import loginRouter from '../routes/login';
 import homeRouter from '../routes/home';
 import regPetRouter from '../routes/regPet';
@@ -27,7 +28,8 @@ app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
 
-app.use('/', loginRouter);
+app.use('/', sensorRouter);
+app.use('/login', loginRouter);
 app.use('/home', homeRouter);
 app.use('/regPet', regPetRouter);
 app.use('/upload', uploadRouter);
