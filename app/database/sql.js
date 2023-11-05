@@ -39,4 +39,11 @@ export const insertSql = {
         console.log(data);
         await promisePool.query(sql);
     },
+
+    setDog: async (data) => {
+        const sql = `insert into dog values (
+            ${data.DogId}, "${data.UserId}",  "${data.DogName}",  "${data.Breed}", "${data.Gender}",${data.Weight}, NULL)`
+        console.log(data);
+        await promisePool.query(sql);
+    }
 };

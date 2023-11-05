@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
                     location.href='/';
                 </script>`)
     } else if (req.session.user.checkLogin ) {
-        res.redirect('/home');
+        res.redirect('/regPet');
     } 
 });
 

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        body {
+            background-color: #fff8e7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .frame {
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            width: 350px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 28px;
+            color: #333;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; 
+            width: 100%;
+        }
+        
+        label {
+            font-size: 15px;
+            color: #333;
+            margin-bottom: 10px; 
+        }
+        
+        input {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+        }
+        
+        input[type="submit"] {
+            background-color: #526534;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s; 
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #b2bda0; 
+        }
+    </style>
+
+    <title>Document</title>
+</head>
+<body>
+    <div class="frame">
+        <h1>Register Pet</h1>
+        <form name="dog" method="post" action="/regPet">
+            <div>
+                <label for="dogid">Id</label>
+                <input id="dogid" name="dogid" type="text" required placeholder="Id" />
+            </div>
+            <div>
+                <label for="userid">UserId</label>
+                <input id="userid" name="userid" type="text" required placeholder="UserId" />
+            </div>
+            <div>
+                <label for="dogname">Name</label>
+                <input id="dogname" name="dogname" type="text" required placeholder="Name" />
+            </div>
+            <div>
+                <label for="breed">Breed</label>
+                <input id="breed" name="breed" type="text" required placeholder="Breed" />
+            </div>
+            <div>
+                <label for="gender">Gender</label>
+                <input id="gender" name="gender" type="text" required placeholder="Gender" />
+            </div>
+            <div>
+                <label for="weight">Weight</label>
+                <input id="weight" name="weight" type="text" placeholder="Weight" />
+            </div>
+            <div>
+                <input type="submit" value="Insert" />
+            </div>
+        </form>
+    </div>
+</body>
+</html>

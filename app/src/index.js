@@ -5,6 +5,7 @@ import expressSession from "express-session";
 
 import loginRouter from '../routes/login';
 import homeRouter from '../routes/home';
+import regPetRouter from '../routes/regPet';
 
 const PORT = 5000;
 const app = express();
@@ -27,6 +28,7 @@ app.use(logger('dev'));
 
 app.use('/', loginRouter);
 app.use('/home', homeRouter);
+app.use('/regPet', regPetRouter);
 
 app.listen(PORT, ()=> {
     console.log(`Server is running at http://localhost:${PORT}`)
