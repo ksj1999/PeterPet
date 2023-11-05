@@ -49,7 +49,7 @@ export const insertSql = {
 
     setPhoto: async (DogId, Photo) => {
         try {
-            const sql = `INSERT INTO BCSIMAGE VALUES (?, ?)`;
+            const sql = `INSERT INTO BCSIMAGE(DogId, Photo) VALUES (?, ?)`;
             await promisePool.query(sql, [DogId, Photo]);
             console.log("Photo inserted successfully");
         } catch (error) {
