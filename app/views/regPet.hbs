@@ -40,8 +40,10 @@
         
         label {
             font-size: 15px;
+            font-weight: bold;
             color: #333;
             margin-bottom: 10px; 
+            margin-right: 25px;
         }
         
         input {
@@ -49,7 +51,48 @@
             border-radius: 8px;
             padding: 10px;
             margin: 10px 0;
-            width: 100%;
+            width: 94%;
+
+        }
+
+        .radio-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .radio-label {
+            margin-right: 10px;
+            font-weight:normal;
+            font-size: 14px;
+        }
+
+        [type="radio"] {
+            appearance: none;
+            border: max(0.5px, 0.1em) solid gray;
+            border-radius: 50%;
+            width: 0.2em;
+            height: 0.2em;
+            transition: border 0.2s ease-in-out;
+            margin-top:1px;
+            margin-right: 3px;
+        }
+
+        [type="radio"]:checked {
+            border: 0.4em solid #526534;
+        }
+
+        [type="radio"]:focus-visible {
+            outline-offset: max(2px, 0.1em);
+            outline: max(2px, 0.1em) dotted #526534;
+        }
+
+        [type="radio"]:hover {
+            box-shadow: 0 0 0 max(2px, 0.2em) lightgray;
+            cursor: pointer;
+        }
+
+        [type="radio"]:hover + .radio-label {
+            cursor: pointer;
         }
         
         input[type="submit"] {
@@ -69,40 +112,31 @@
             background-color: #b2bda0; 
         }
     </style>
-
-    <title>Document</title>
 </head>
 <body>
     <div class="frame">
         <h1>Register Pet</h1>
         <form name="dog" method="post" action="/regPet">
-            <div>
-                <label for="dogid">Id</label>
-                <input id="dogid" name="dogid" type="text" required placeholder="Id" />
-            </div>
-            <div>
-                <label for="userid">UserId</label>
-                <input id="userid" name="userid" type="text" required placeholder="UserId" />
-            </div>
-            <div>
-                <label for="dogname">Name</label>
-                <input id="dogname" name="dogname" type="text" required placeholder="Name" />
-            </div>
-            <div>
-                <label for="breed">Breed</label>
-                <input id="breed" name="breed" type="text" required placeholder="Breed" />
-            </div>
-            <div>
+        
+            <label for="dogid">Id</label>
+            <input id="dogid" name="dogid" type="text" required placeholder="반려동물의 이름을 입력해주세요" />
+            
+            <label for="breed">Breed</label>
+            <input id="breed" name="breed" type="text" required placeholder="반려동물의 종을 입력해주세요" />
+           
+            <div class="radio-container">
                 <label for="gender">Gender</label>
-                <input id="gender" name="gender" type="text" required placeholder="Gender" />
+                <input type="radio" id="female" name="gender" value="F" checked required>
+                <label class="radio-label" for="female">Female</label>
+                <input type="radio" id="male" name="gender" value="M" required>
+                <label class="radio-label" for="male">Male</label>
             </div>
-            <div>
-                <label for="weight">Weight</label>
-                <input id="weight" name="weight" type="text" placeholder="Weight" />
-            </div>
-            <div>
-                <input type="submit" value="Insert" />
-            </div>
+
+            <label for="weight">Weight</label>
+            <input id="weight" name="weight" type="text" placeholder="반려동물의 몸무게를 입력해주세요 (0.0kg)" />
+
+            <input type="submit" value="Insert" />
+
         </form>
     </div>
 </body>

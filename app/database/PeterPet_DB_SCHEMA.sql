@@ -7,9 +7,8 @@ CREATE TABLE USER (
 );
 
 CREATE TABLE DOG (
-    DogId INT NOT NULL,
+    DogId VARCHAR(45) NOT NULL,
     UserId VARCHAR(45) NOT NULL,
-    DogName VARCHAR(45) NULL,
     Breed VARCHAR(45) NULL,
     Gender CHAR NULL,
     Weight FLOAT NULL,
@@ -20,7 +19,7 @@ CREATE TABLE DOG (
 
 CREATE TABLE BCSIMAGE(
     PhotoId INT NOT NULL,
-    DogId INT NOT NULL,
+    DogId VARCHAR(45) NOT NULL,
     Photo BLOB NULl,
     PRIMARY KEY (PhotoId), 
     FOREIGN KEY (DogId) REFERENCES DOG (DogId)
@@ -28,7 +27,7 @@ CREATE TABLE BCSIMAGE(
 
 CREATE TABLE  DISPENSER (
     FeedTime DATETIME not null,
-    DogId INT NOT NULL,
+    DogId VARCHAR(45) NOT NULL,
     Amount int null,
     PRIMARY KEY (FeedTime),
     FOREIGN KEY (DogId) REFERENCES DOG (DogId)
@@ -37,7 +36,7 @@ CREATE TABLE  DISPENSER (
 
 CREATE TABLE SENSOR(
     SensTime DATETIME not null,
-    DogId int not null, 
+    DogId VARCHAR(45) NOT NULL, 
     ax FLOAT NULL,
     ay FLOAT NULL,
     az FLOAT NULL,
@@ -53,7 +52,7 @@ CREATE TABLE SENSOR(
 
 CREATE TABLE Activity (
     ActTime DATETIME NOT NULL,
-    DogId INT NOT NULL,
+    DogId VARCHAR(45) NOT NULL,
     Type INT NULL DEFAULT 0,
     PRIMARY KEY (ActTime),
     FOREIGN KEY (DogId) REFERENCES DOG (DogId)
@@ -62,13 +61,12 @@ CREATE TABLE Activity (
 ALTER TABLE BCSIMAGE MODIFY PhotoId INT AUTO_INCREMENT;
 ALTER TABLE BCSIMAGE MODIFY Photo LONGBLOB;
 
-
 Insert into USER values ( 'yoon8720', 'king01', 'dungdunge', 'yoon8720@nate.com');
 Insert into USER values ( 'kaya01', 'kwon0871', 'android369', 'kaya@gmail.com');
 
-Insert into DOG values ( 200, 'yoon8720', 'dung_dung_e', 'shihtzu', 'M', 8.7, 'Normal');
-Insert into DOG values ( 201, 'yoon8720', 'happy', 'maltese', 'M', 3.1, 'Obesity');
-Insert into DOG values ( 202, 'kaya01', 'bbobbi', 'shihtzu', 'F', 2.7, 'Underweight');
+Insert into DOG values ( 'dung2', 'yoon8720',  'shihtzu', 'M', 8.7, 'Normal');
+Insert into DOG values (  'happy',  'yoon8720','maltese', 'M', 3.1, 'Obesity');
+Insert into DOG values ( 'bbobbi', 'kaya01',  'shihtzu', 'F', 2.7, 'Underweight');
 
 Insert into BCSIMAGE values( 1, 200, null);
 

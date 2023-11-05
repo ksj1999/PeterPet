@@ -21,6 +21,7 @@ router.post('/', async (req, res) => {
         if (vars.id == user.UserId && vars.password == user.Password) {
             console.log('login success!');
             req.session.user = { id: user.UserId, role : 'user', checkLogin: true };
+            req.session.userId = user.UserId;
         }
     });
 
