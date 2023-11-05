@@ -42,8 +42,20 @@ export const insertSql = {
 
     setDog: async (data) => {
         const sql = `insert into dog values (
-            ${data.DogId}, "${data.UserId}",  "${data.DogName}",  "${data.Breed}", "${data.Gender}",${data.Weight}, NULL)`
+            ${data.DogId}, "${data.UserId}",  "${data.DogName}",  
+            "${data.Breed}", "${data.Gender}",${data.Weight}, NULL)`
         console.log(data);
         await promisePool.query(sql);
+    },
+
+    setPhoto: async (DogId, Photo) => {
+        try {
+            const sql = "INSERT INTO BCSIMAGE (DogId, Photo) VALUES (?, ?)";
+            await promisePool.query(sql, [DogId, Photo]);
+            console.log("Photo inserted successfully");
+        } catch (error) {
+            console.error("Error inserting photo:", error);
+        }
     }
+    
 };

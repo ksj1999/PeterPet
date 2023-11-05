@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Photo Upload</title>
+  <style>
+    body {
+      background-color: #fff8e7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .preview-image {
+      max-width: 200px;
+      max-height: 200px;
+      margin: 10px;
+    }
+
+    input[type="text"],
+    input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+      background-color: #526534;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #b2bda0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Upload Photos</h1>
+  <form action="/upload" method="POST" enctype="multipart/form-data">
+    <label for="DogId">DogId:</label>
+    <input type="text" name="DogId" required>
+    <br>
+
+    <label for="photos">Photos:</label>
+    <input type="file" name="photos" accept="image/*" required multiple>
+    <br>
+
+    <div id="imagePreviews">
+    </div>
+    <br>
+
+    <input type="submit" value="Upload Photos">
+  </form>
+  <script>
+    const photoInput = document.querySelector('input[name="photos"]');
+    const imagePreviews = document.getElementById('imagePreviews');
+
+    photoInput.addEventListener('change', (event) => {
+      imagePreviews.innerHTML = '';
+
+      const files = event.target.files;
+      for (const file of files) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.classList.add('preview-image');
+          imagePreviews.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+</body>
+</html>

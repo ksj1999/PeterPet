@@ -59,6 +59,10 @@ CREATE TABLE Activity (
     FOREIGN KEY (DogId) REFERENCES DOG (DogId)
 );
 
+ALTER TABLE BCSIMAGE MODIFY PhotoId INT AUTO_INCREMENT;
+ALTER TABLE BCSIMAGE MODIFY Photo LONGBLOB;
+
+
 Insert into USER values ( 'yoon8720', 'king01', 'dungdunge', 'yoon8720@nate.com');
 Insert into USER values ( 'kaya01', 'kwon0871', 'android369', 'kaya@gmail.com');
 

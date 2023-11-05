@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
     };
 
     insertSql.setDog(data);
-    res.send("Data inserted successfully");
+    res.redirect('/upload');
 });
 
 module.exports = router;
