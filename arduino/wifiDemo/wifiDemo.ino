@@ -1,91 +1,151 @@
+#include <Wire.h>
 #include <Arduino_LSM9DS1.h>
 #include <Arduino_HTS221.h>
+#include <WiFiNINA.h> 
 
+#define MIC_PIN A0  // 아날로그 마이크 입력 핀
+#define SAMPLE_RATE 16000  // 샘플링 속도 (16kHz)
+#define MIC_GAIN 50  // 마이크 민감도 조정 가능 (16배)
+#define BUFFER_SIZE 256  // 샘플 버퍼 크기
+
+//wifi 설정
+char ssid[] = "U+Net3906";
+char pass[] = "1C10006256";
+char server[] = "210.111.178.93";
+int port = 80; // 웹 서버 포트 입력
+
+// 받아올 센서
+float ax, ay, az;
+float gx, gy, gz;
 float temp, humi;
-float accel_x, accel_y, accel_z;
-float gyro_x, gyro_y, gyro_z;
 
-String ssid = "U+Net3906";
-String PASSWORD = "1C10006256";
-String host = "192.168.219.100:8787";
-
-void connectWifi() {
-  String join = "AT+CWJAP=\"" + ssid + "\",\"" + PASSWORD + "\"";
-  Serial.println("Connect Wifi...");
-  Serial1.println(join);
-  delay(10000);
-  if (Serial1.find("OK")) {
-    Serial.println("WIFI connect");
-  } else {
-    Serial.println("connect timeout");
-  }
-  delay(1000);
-}
-
-void httpclient(String char_input) {
-  delay(100);
-  Serial.println("connect TCP...");
-  Serial1.println("AT+CIPSTART=\"TCP\",\"" + host + "\",8787");
-  delay(500);
-  if (Serial1.find("ERROR")) return;
-
-  Serial.println("Send data...");
-  String url = char_input;
-  String cmd = "GET /process.php?temp=" + url + " HTTP/1.0\r\n\r\n";
-  Serial1.print("AT+CIPSEND=");
-  Serial1.println(cmd.length());
-  Serial.print("AT+CIPSEND=");
-  Serial.println(cmd.length());
-  if (Serial1.find(">")) {
-    Serial.println(">");
-  } else {
-    Serial1.println("AT+CIPCLOSE");
-    Serial.println("connect timeout");
-    delay(1000);
-    return;
-  }
-  delay(500);
-
-  Serial1.println(cmd);
-  Serial.println(cmd);
-  delay(100);
-  if (Serial1.find("ERROR")) return;
-  Serial1.println("AT+CIPCLOSE");
-  delay(100);
-}
+unsigned long lastSampleTime = 0;
+const unsigned long sampleInterval = 1000;  // 1초에 한 번
+int sampleBuffer[BUFFER_SIZE];
+float magnitudeBuffer[BUFFER_SIZE / 2];
 
 void setup() {
   Serial.begin(9600);
-  Serial1.begin(9600);
-  connectWifi();
-  delay(500);
-
-  if (!IMU.begin()) { // LSM9DSI sensor initialization
-    Serial.println("LSM9DSI sensor error!");
+  if (!IMU.begin()) { //LSM9DSI센서 시작
+    Serial.println("LSM9DSI센서 오류!");
+    while (1);
+  }
+  
+  if (!HTS.begin()) { //HTS221센서 시작
+    Serial.println("HTS221센서 오류!");
     while (1);
   }
 
-  if (!HTS.begin()) { // HTS221 sensor initialization
-    Serial.println("HTS221 sensor error!");
-    while (1);
+  pinMode(MIC_PIN, INPUT);
+  analogReadResolution(12);
+
+  // Wi-Fi 연결
+  while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
+    Serial.println("Connection failed! Reconnecting...");
+    delay(3000);
   }
+  Serial.println("Connected to Wi-Fi");
 }
 
 void loop() {
-  temp = HTS.readTemperature();
-  humi = HTS.readHumidity();
-  String str_output = String(temp) + "&humi=" + String(humi);
-  delay(1000);
-  httpclient(str_output);
-  delay(1000);
+  if (WiFi.status() == WL_CONNECTED) {
+    // 센서 데이터 수집
 
-  while (Serial1.available()) {
-    char response = Serial1.read();
-    Serial.write(response);
-    if (response == '\r') {
-      Serial.print('\n');
+    //decibel
+    unsigned long currentMillis = millis();
+    // 1초에 한 번만 샘플링
+    if (currentMillis - lastSampleTime >= sampleInterval) {
+      lastSampleTime = currentMillis;
+
+      // 아날로그 입력으로부터 샘플링
+      for (int i = 0; i < BUFFER_SIZE; i++) {
+        sampleBuffer[i] = analogRead(MIC_PIN);
+        delayMicroseconds(1000000 / SAMPLE_RATE);
+      }
+
+      // FFT를 사용하여 주파수 영역으로 변환 -> 결과 데이터는 magnitudeBuffer에 저장됨
+      for (int i = 0; i < BUFFER_SIZE / 2; i++) {
+        magnitudeBuffer[i] = sampleBuffer[i];
+      }
+
+      // 주파수 스펙트럼의 주파수 및 데시벨 출력
+      float maxMagnitude = 0;
+      for (int i = 0; i < (BUFFER_SIZE / 2); i++) {
+        float magnitude = magnitudeBuffer[i];
+        if (magnitude > maxMagnitude) {
+          maxMagnitude = magnitude;
+        }
+      }
+
+      // 데시벨 값 계산
+      float decibelValue = 20 * log10(maxMagnitude);
+
+      // 데시벨 값을 시리얼 모니터에 출력
+      Serial.println("decibel: " + String(decibelValue, 2));
     }
+  //가속도센서
+  if (IMU.accelerationAvailable()) {
+    IMU.readAcceleration(ax, ay, az);
+    Serial.print("ax : "); Serial.println(ax); 
+    Serial.print("ay:  "); Serial.println(ay); 
+    Serial.print("ax: "); Serial.println(az);
   }
-  Serial.println("\n==================================\n");
+  //자이로센서
+  if (IMU.gyroscopeAvailable()) {
+    IMU.readGyroscope(gx, gy, gz);
+    Serial.print("gx"); Serial.println(gx); 
+    Serial.print("gy"); Serial.print(gy); 
+    Serial.print("gz"); Serial.println(gz);
+  }
+ //온도센서
+  temp = HTS.readTemperature();
+  Serial.print("temp : "); Serial.println(temp);
+  //습도센서
+  humi = HTS.readHumidity();
+  Serial.print("humi : "); Serial.println(humi);
+  Serial.println("----------------------------------------------------");
   delay(2000);
+
+    // 데이터 전송
+    if (sendDataToServer()) {
+      Serial.println("Data sent successfully");
+    } else {
+      Serial.println("Data send failed");
+    }
+
+    delay(10000); // 데이터 전송 간격 설정 (10초)
+  }
+}
+
+bool sendDataToServer() {
+  WiFiClient client;
+  
+  if (client.connect(server, port)) {
+    Serial.println("Connected to server");
+    
+    // HTTP POST 요청 생성
+    String dataToSend = "Your_Sensor_Data"; 
+    String postData = "data=" + dataToSend;
+    String request = "POST /your_endpoint HTTP/1.1\r\n";
+    request += "Host: " + String(server) + "\r\n";
+    request += "Content-Length: " + String(postData.length()) + "\r\n\r\n";
+    request += postData;
+    
+    // 요청 전송
+    client.print(request);
+
+    // 응답 확인
+    while (client.connected()) {
+      if (client.available()) {
+        char c = client.read();
+        Serial.print(c);
+      }
+    }
+
+    client.stop();
+    return true;
+  } else {
+    Serial.println("Connection to server failed");
+    return false;
+  }
 }
