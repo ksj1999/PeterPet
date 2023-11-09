@@ -8,10 +8,11 @@ router.get('/', (_req, res) => {
 })
 
 router.post('/', async(req, res)=> {
+    console.log('Recived POST request at /home')
     const vars = req.body;
     const data={
         Query: vars.Query
-    };
+    };  
     console.log('data\n', data.Query);
     let all_data = [];
 
