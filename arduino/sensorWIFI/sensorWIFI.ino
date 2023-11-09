@@ -42,6 +42,22 @@ bool waitForResponse(const char* expectedResponse, unsigned long timeout, bool p
 void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
+  if (!IMU.begin()) { //LSM9DSI센서 시작
+    Serial.println("LSM9DSI센서 오류!");
+    while (1);
+  }
+  
+  if (!HTS.begin()) { //HTS221센서 시작
+    Serial.println("HTS221센서 오류!");
+    while (1);
+  }
+  while (!Serial);
+
+  // 아날로그 입력 설정
+  pinMode(MIC_PIN, INPUT);
+  // 아날로그 입력 해상도 설정 (12비트)
+  analogReadResolution(12);
+
   Serial.println("Connecting to WiFi...");
 
   Serial1.println("AT+CWJAP=\"" + ssid + "\",\"" + password + "\"");
@@ -59,8 +75,6 @@ void loop() {
 
   //decibel
     unsigned long currentMillis = millis();
-    // 1초에 한 번만 샘플링
-      lastSampleTime = currentMillis;
 
       // 아날로그 입력으로부터 샘플링
       for (int i = 0; i < BUFFER_SIZE; i++) {
@@ -83,7 +97,7 @@ void loop() {
       }
 
       // 데시벨 값 계산
-      float decibel = 20 * log10(maxMagnitude);
+      decibel = 20 * log10(maxMagnitude);
   //가속도센서
   if (IMU.accelerationAvailable()) {
     IMU.readAcceleration(ax, ay, az);
@@ -97,7 +111,6 @@ void loop() {
 
   //습도센서
   humi = HTS.readHumidity();
-
 
   Serial.println("Connecting to web server...");
   Serial1.println("AT+CIPSTART=\"TCP\",\"210.111.178.93\",80");
