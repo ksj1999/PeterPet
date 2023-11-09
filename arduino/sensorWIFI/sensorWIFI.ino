@@ -2,22 +2,21 @@
 #include <Arduino_LSM9DS1.h>
 #include <Arduino_HTS221.h>
 
-#define MIC_PIN A0  // 아날로그 마이크 입력 핀
-#define SAMPLE_RATE 16000  // 샘플링 속도 (16kHz)
-#define MIC_GAIN 50  // 마이크 민감도 조정 가능 (16배)
-#define BUFFER_SIZE 256  // 샘플 버퍼 크기
+#define MIC_PIN A0  // Analog microphone input pin
+#define SAMPLE_RATE 16000  // Sampling rate (16kHz)
+#define MIC_GAIN 50  // Microphone sensitivity adjustment (16x)
+#define BUFFER_SIZE 256  // Sample buffer size
 
 unsigned long lastSampleTime = 0;
-const unsigned long sampleInterval = 1000;  // 1초에 한 번
 int sampleBuffer[BUFFER_SIZE];
 float magnitudeBuffer[BUFFER_SIZE / 2];
 
 float ax, ay, az;
 float gx, gy, gz;
-float temp, humi, decibelValue;
+float temp, humi, decibel;
 
-String ssid = "Sy";    // WiFi 네트워크 이름
-String password = "01075799717";  // WiFi 네트워크 비밀번호
+String ssid = "Sy";
+String password = "01075799717";
 String serverIP = "210.111.178.93";
 int serverPort = 80;
 
@@ -42,44 +41,25 @@ bool waitForResponse(const char* expectedResponse, unsigned long timeout, bool p
 
 void setup() {
   Serial.begin(9600);
-  Serial1.begin(9600);  // ESP8266와 소프트웨어 시리얼 통신 시작
-  if (!IMU.begin()) { //LSM9DSI센서 시작
-    Serial.println("LSM9DSI센서 오류!");
-    while (1);
-  }
-  
-  if (!HTS.begin()) { //HTS221센서 시작
-    Serial.println("HTS221센서 오류!");
-    while (1);
-  }
-  while (!Serial);
-
-  // 아날로그 입력 설정
-  pinMode(MIC_PIN, INPUT);
-
-  // 아날로그 입력 해상도 설정 (12비트)
-  analogReadResolution(12);
-
-
-  // ESP8266 모듈을 WiFi에 연결
-  Serial1.println("AT+CWJAP=\"" + ssid + "\",\"" + password + "\"");
+  Serial1.begin(9600);
   Serial.println("Connecting to WiFi...");
 
-  // WiFi 연결 대기
+  Serial1.println("AT+CWJAP=\"" + ssid + "\",\"" + password + "\"");
+
   if (waitForResponse("OK", 10000)) {
-    Serial.println("WIFI connected");
+    Serial.println("WiFi connected");
   } else {
-    Serial.println("WIFI connection timeout");
+    Serial.println("WiFi connection timeout");
     while (1);
   }
   delay(1000);
 }
 
 void loop() {
+
   //decibel
     unsigned long currentMillis = millis();
     // 1초에 한 번만 샘플링
-    if (currentMillis - lastSampleTime >= sampleInterval) {
       lastSampleTime = currentMillis;
 
       // 아날로그 입력으로부터 샘플링
@@ -103,8 +83,7 @@ void loop() {
       }
 
       // 데시벨 값 계산
-      float decibelValue = 20 * log10(maxMagnitude);
-    }
+      float decibel = 20 * log10(maxMagnitude);
   //가속도센서
   if (IMU.accelerationAvailable()) {
     IMU.readAcceleration(ax, ay, az);
@@ -119,27 +98,37 @@ void loop() {
   //습도센서
   humi = HTS.readHumidity();
 
-  String dataToSend = "ax=" + String(ax) + "&ay=" + String(ay) + "&az=" +String(az) 
-  + "&gx=" + String(gx) + "&gy=" + String(gy)+ "&gz=" + String(gz)
-  + "&decibel=" + String(decibelValue) + "&temp=" + String(temp) + "&humi=" + String(humi);
-
 
   Serial.println("Connecting to web server...");
-  Serial1.println("AT+CIPSTART=\"TCP\",\"" + serverIP + "\"," + serverPort);
+  Serial1.println("AT+CIPSTART=\"TCP\",\"210.111.178.93\",80");
   delay(2000);
+
   if (Serial1.find("ERROR")) {
     Serial.println("Connect error");
     delay(1000);
     return;
   }
-  Serial1.println("AT+CIPSTATUS");
 
   Serial.println("Send data...");
-  delay(5000); 
+
+  String query = "Query=INSERT%20INTO%20sensor%20VALUES%20(now(),%20" + String(ax, 2) +
+                ",%20" + String(ay, 2) +
+                ",%20" + String(az, 2) +
+                ",%20" + String(gx, 2) +
+                ",%20" + String(gy, 2) +
+                ",%20" + String(gz, 2) +
+                ",%20" + String(decibel, 2) +
+                ",%20" + String(temp, 2) +
+                ",%20" + String(humi, 2) +
+                ");";
+                
+  int contentLength = query.length();
+
   Serial1.print("AT+CIPSEND=");
-  Serial1.println(dataToSend.length());
+  Serial1.println(contentLength + 124); // Adjust as needed
+
   delay(2000);
-  
+
   if (Serial1.find(">")) {
     Serial.println("Ready to send");
   } else {
@@ -148,25 +137,26 @@ void loop() {
     delay(1000);
     return;
   }
-  delay(500);
 
-  Serial1.print("POST / HTTP/1.1\r\n");
-  Serial1.print("Host: " + serverIP + "\r\n");
-  Serial1.print("Content-Type: application/x-www-form-urlencoded\r\n");
-  Serial1.print("Content-Length: " + String(dataToSend.length()) + "\r\n");
-  Serial1.print("\r\n");
-  Serial1.print(dataToSend);
+  delay(5000);
 
-  Serial.println(dataToSend);
+  Serial1.println("POST /home HTTP/1.1");
+  Serial1.println("Host: 210.111.178.93");
+  Serial1.println("Content-Type: application/x-www-form-urlencoded");
+  Serial1.print("Content-Length: ");
+  Serial1.println(contentLength);
+  Serial1.println("");
+  Serial1.println(query);
 
-  delay(500);  // 추가: AT+CIPCLOSE 전에 잠시 기다리기
+  Serial.println("Data sent. Waiting for response...");
+
+  delay(5000);
+
   if (Serial1.find("ERROR")) {
     Serial.println("Send error");
     delay(1000);
     return;
   }
-  Serial1.println("AT+CIPCLOSE");
-  Serial.println("AT+CIPCLOSE");
 
   while (Serial1.available()) {
     char response = Serial1.read();
@@ -175,6 +165,8 @@ void loop() {
       Serial.print('\n');
     }
   }
+
+  Serial1.println("AT+CIPCLOSE");
   Serial.println("\n==================================\n");
   delay(2000);
 }
