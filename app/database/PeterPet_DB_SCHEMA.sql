@@ -68,6 +68,7 @@ CREATE TABLE  DISPENSER (
     FeedTime DATETIME not null,
     DogId VARCHAR(45) NOT NULL,
     Amount INT NULL,
+    EatKcal Float NUll DEFAULT 0,
     PRIMARY KEY (FeedTime),
     FOREIGN KEY (DogId) REFERENCES DOG (DogId)
 );
@@ -81,15 +82,15 @@ Insert into DOG values ('bbobbi', 'kaya01', 'shihtzu', 'F', 2.7, false,'Underwei
 
 Insert into BCSIMAGE values(1, 'dung2', null);
 
-Insert into DISPENSER values ('2023-11-02 10:30:00', 'dung2', 40);
-Insert into DISPENSER values ('2023-11-02 22:30:00', 'dung2', 40);
-Insert into DISPENSER values ('2023-11-03 10:30:00', 'dung2', 20);
-Insert into DISPENSER values ('2023-11-03 22:30:00', 'dung2', 40);
-Insert into DISPENSER values ('2023-11-04 10:30:00', 'dung2', 20);
-Insert into DISPENSER values ('2023-11-04 22:30:00', 'dung2', 30);
-Insert into DISPENSER values ('2023-11-05 10:30:00', 'dung2', 10);
-Insert into DISPENSER values ('2023-11-05 22:30:00', 'dung2', 40);
-Insert into DISPENSER values ('2023-11-06 10:30:00', 'dung2', 40);
+Insert into DISPENSER values ('2023-11-02 10:30:00', 'dung2', 40, 200);
+Insert into DISPENSER values ('2023-11-02 22:30:00', 'dung2', 40, 200);
+Insert into DISPENSER values ('2023-11-03 10:30:00', 'dung2', 20, 100);
+Insert into DISPENSER values ('2023-11-03 22:30:00', 'dung2', 40, 200);
+Insert into DISPENSER values ('2023-11-04 10:30:00', 'dung2', 20, 100);
+Insert into DISPENSER values ('2023-11-04 22:30:00', 'dung2', 30, 150);
+Insert into DISPENSER values ('2023-11-05 10:30:00', 'dung2', 10, 50);
+Insert into DISPENSER values ('2023-11-05 22:30:00', 'dung2', 40, 200);
+Insert into DISPENSER values ('2023-11-06 10:30:00', 'dung2', 40, 200);
 
 Insert into SENSOR values ('2023-11-06 10:30:00', 'dung2', 1.98, -0.03, -2.67, -4.94, 105.35, -83.68, 52.1, 36.8, 59.1);
 Insert into SENSOR values ('2023-11-06 10:31:00', 'dung2', 2.98, -0.08, 1.67, 2.94, -80.34, -43.65, 62.1, 36.8, 59.1);
