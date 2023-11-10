@@ -32,7 +32,7 @@ router.post('/', async(req, res)=> {
         all_data.push(`${data.Query} is not a query, or there is an error.`);
         all_data.push('Please check.');
     }
-    res.render('home', {data: all_data});
+    res.render('sensor', {data: all_data});
 })
 
 module.exports = router;
