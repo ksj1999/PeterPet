@@ -1,4 +1,4 @@
-CREATE TABLE USER (
+CREATE TABLE User (
     UserId VARCHAR(45) NOT NULL,
     Password VARCHAR(45) NOT NULL,
     UserName VARCHAR(45) NOT NULL,
@@ -7,16 +7,27 @@ CREATE TABLE USER (
     PRIMARY KEY (UserId)
 );
 
+CREATE TABLE Owner (
+    OwnerId VARCHAR(45) NOT NULL,
+    UserId VARCHAR(45) NOT NULL,
+    Password VARCHAR(45) NOT NULL,
+    OwnerName VARCHAR(45) NOT NULL,
+    Email VARCHAR(45) NOT NULL,
+    RegDate DATETIME NOT NULL,
+    PRIMARY KEY (OwnerId),
+    FOREIGN KEY(UserId) REFERENCES USER (UserId)
+);
+
 CREATE TABLE DOG (
     DogId VARCHAR(45) NOT NULL,
-    UserId VARCHAR(45) NOT NULL,
+    OwnerId VARCHAR(45) NOT NULL,
     Breed VARCHAR(45) NULL,
     Gender CHAR NULL,
     Weight FLOAT NULL,
     Neuter boolean null, 
     BCS VARCHAR(20) NULL,
     PRIMARY KEY (DogId), 
-    FOREIGN KEY (UserId) REFERENCES USER (UserId)
+    FOREIGN KEY (OwnerId) REFERENCES Owner(OwnerId)
 );
 
 CREATE TABLE BCSIMAGE(
@@ -73,12 +84,17 @@ CREATE TABLE  DISPENSER (
     FOREIGN KEY (DogId) REFERENCES DOG (DogId)
 );
 
-Insert into USER values ('yoon8720', 'king01', 'dungdunge', 'yoon8720@nate.com', now());
+Insert into USER values ('yoon8720', 'king01', 'dungdung2', 'yoon8720@nate.com', now());
 Insert into USER values ('kaya01', 'kwon0871', 'android369', 'kaya@gmail.com', now());
 
-Insert into DOG values ('dung2', 'yoon8720', 'shihtzu', 'M', 8.7, true, 'Normal');
-Insert into DOG values ('happy', 'yoon8720', 'maltese', 'M', 3.1, true, 'Obesity');
-Insert into DOG values ('bbobbi', 'kaya01', 'shihtzu', 'F', 2.7, false,'Underweight');
+Insert into Owner values ('sy', 'yoon8720', '1234', 'seoyoung', 'seoyoung@gmail.com', now());
+Insert into Owner values ('ms', 'yoon8720', '1234', 'minseon', 'minseon@gmail.com', now());
+Insert into Owner values ('hj', 'yoon8720', '1234', 'hyeonji', 'hyeonji@gmail.com', now());
+
+
+Insert into DOG values ('dung2', 'sy', 'shihtzu', 'M', 8.7, true, 'Normal');
+Insert into DOG values ('happy', 'ms', 'maltese', 'M', 3.1, true, 'Obesity');
+Insert into DOG values ('bbobbi', 'hj', 'shihtzu', 'F', 2.7, false,'Underweight');
 
 Insert into BCSIMAGE values(1, 'dung2', null);
 
