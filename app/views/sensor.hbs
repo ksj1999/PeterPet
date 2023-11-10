@@ -1,53 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Apply</title>
+    <style>
+        body {
+            background-color: #fff8e7;
+            margin: 50px 25px auto;
+        }
+
+        .container {
+            margin: 20px auto;
+            padding: 50px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        input[type="submit"] {
+            background-color: #526534;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s; 
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #b2bda0; 
+        }
+
+         input {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+        }
+        
+
+
+        .result {
+            margin-top: 20px;
+        }
+
+        .result p {
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
-    <div class="frame">
-        <h1>Sensor</h1>
-        <form name="sensor" method="post" action="/">
-        
-            <label for="ax">ax</label>
-            <input id="ax" name="ax" type="text" required />
-            <br>
+    <div class="container">
+        <h1>Query Apply</h1>
 
-            <label for="ay">ay</label>
-            <input id="ay" name="ay" type="text" required />
-            <br>
+        <form name="employee" method="post" action="/sensor">
+            <div>
+                <label for="Query">Query</label>
+                <input id="Query" name="Query" type="text" required placeholder="Query"/>
+            </div>
 
-            <label for="az">az</label>
-            <input id="az" name="az" type="text" required />
-            <br>
-            
-            <label for="gx">gx</label>
-            <input id="gx" name="gx" type="text" required />
-            <br>
-            
-            <label for="gy">gy</label>
-            <input id="gy" name="gy" type="text" required />
-            <br>
-            
-            <label for="gz">gz</label>
-            <input id="gz" name="gz" type="text" required />
-            <br>
-            
-            <label for="decibel">decibel</label>
-            <input id="decibel" name="decibel" type="text" required />
-            <br>
-            
-            <label for="temp">temp</label>
-            <input id="temp" name="temp" type="text" required />
-            <br>
-            
-            <label for="humi">humi</label>
-            <input id="humi" name="humi" type="text" required />
-            <br>
-            
-            <input type="submit" value="Insert" />
-
+            <div>
+                <input type="submit" value="Apply"/>
+            </div>
         </form>
+
+        <div class="result">
+            {{#each data}}
+            <p>{{this}}</p>
+            {{/each}}
+        </div>
     </div>
 </body>
 </html>

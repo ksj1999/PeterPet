@@ -32,6 +32,15 @@ export const selectSql = {
 
 // insert query
 export const insertSql = {
+    setUser:async (data) => {
+        const sql = `insert into user values (
+            ${data.UserId}, ${data.Password},${data.UserName},
+            ${data.Email}, now()
+        )`
+        console.log(data);
+        await promisePool.query(sql);
+    },
+
     setSensor:async (data) => {
         const sql = `insert into sensor values (
             now(), ${data.ax}, ${data.ay},${data.az},
