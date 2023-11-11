@@ -34,7 +34,7 @@ transform = transforms.Compose([
 # 모델 정의 및 로드
 #model = EfficientNet.from_pretrained('efficientnet-b0.pth', num_classes=3)
 model = EfficientNet.from_name('efficientnet-b0', num_classes=3)
-model.load_state_dict(torch.load(r'app\model_epo5.pth'))
+model.load_state_dict(torch.load('./app/model_epo5.pth'))
 model.to(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
 
 # 인자로부터 이미지 경로 로드
