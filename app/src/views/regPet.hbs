@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="regPet.css"> 
+</head>
+<body>
+    <div class="frame">
+        <h1>Register Pet</h1>
+        <form name="dog" method="post" action="/regPet">
+        
+            <label for="dogid">Id</label>
+            <input id="dogid" name="dogid" type="text" required placeholder="반려동물의 이름을 입력해주세요" />
+            
+            <label for="breed">Breed</label>
+            <input id="breed" name="breed" type="text" required placeholder="반려동물의 종을 입력해주세요" />
+           
+            <div class="radio-container">
+                <label for="gender">Gender</label>
+                <input type="radio" id="female" name="gender" value="F" checked required>
+                <label class="radio-label" for="female">Female</label>
+                <input type="radio" id="male" name="gender" value="M" required>
+                <label class="radio-label" for="male">Male</label>
+            </div>
+
+            <label for="weight">Weight</label>
+            <input id="weight" name="weight" type="text" placeholder="반려동물의 몸무게를 입력해주세요 (0.0kg)" />
+
+            <input type="submit" value="Insert" />
+
+        </form>
+    </div>
+</body>
+</html>

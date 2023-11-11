@@ -3,10 +3,10 @@ import logger from 'morgan';
 import path from 'path';
 import expressSession from "express-session";
 
-import loginRouter from '../routes/login';
-import sensorRouter from '../routes/sensor';
-import regPetRouter from '../routes/regPet';
-import uploadRouter from '../routes/upload';
+import loginRouter from './routes/login';
+import sensorRouter from './routes/sensor';
+import regPetRouter from './routes/regPet';
+import uploadRouter from './routes/upload';
 
 const PORT = 5000;
 const app = express();
@@ -22,8 +22,10 @@ app.use(
     })
 );
 
-app.set('views', path.join(__dirname, '../views'));
+app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'hbs');
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(logger('dev'));
 

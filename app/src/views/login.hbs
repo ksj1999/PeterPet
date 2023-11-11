@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="login.css"> 
+    <title>PeterPet</title>
+</head>
+<body>
+    <div class="header">
+        <div class="logo"><img
+        src="./img/bgImage.png"
+        alt="bg"
+      /></div>
+      <h1>Peter Pet</h1>
+    </div>
+    <div class="content">
+        <h1>Welcome</h1>
+        <form id="user" method="post" action='/'>
+            <label for="id">ID</label>
+            <input id="id" name="id" type="text" required placeholder="Your ID">
+            
+            <label for="password">Password</label>
+            <input id="passwd" name='password' type="password" required placeholder="Your Password">
+            
+            <button class='btn' type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>
