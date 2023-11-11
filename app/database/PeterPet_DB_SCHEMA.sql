@@ -3,17 +3,17 @@ CREATE TABLE User (
     Password VARCHAR(45) NOT NULL,
     UserName VARCHAR(45) NOT NULL,
     Email VARCHAR(45) NOT NULL,
-    RegDate DATETIME NOT NULL,
+    RegDate DATETIME,
     PRIMARY KEY (UserId)
 );
 
 CREATE TABLE Owner (
-    OwnerId VARCHAR(45) NOT NULL,
+    OwnerId VARCHAR(45) NOT NULL,S
     UserId VARCHAR(45) NOT NULL,
     Password VARCHAR(45) NOT NULL,
     OwnerName VARCHAR(45) NOT NULL,
     Email VARCHAR(45) NOT NULL,
-    RegDate DATETIME NOT NULL,
+    RegDate DATETIME,
     PRIMARY KEY (OwnerId),
     FOREIGN KEY(UserId) REFERENCES USER (UserId)
 );

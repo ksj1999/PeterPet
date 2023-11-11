@@ -25,7 +25,7 @@ router.post("/", upload.array("photos", 13), (req, res) => {
         insertSql.setPhoto(DogId, Photo);
     });
 
-    res.redirect('/home');
+    res.redirect('/');
 });
 
 export default router;
