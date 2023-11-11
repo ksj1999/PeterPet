@@ -43,6 +43,7 @@ router.post('/', upload.array('photos', 13), (req, res) => {
         insertSql.setPhoto(DogId, Photo);
     });
 
+<<<<<<< HEAD
     // Python 스크립트 실행
     runPythonScript(imagePaths)
       .then(output => {
@@ -53,6 +54,9 @@ router.post('/', upload.array('photos', 13), (req, res) => {
         console.error('Error executing Python script:', error);
         res.status(500).send('Error processing image');
       });
+=======
+    res.redirect('/');
+>>>>>>> 8f7a33cc9e5f3f985b7d74b061b496a9e2f59bf0
 });
 
 export default router;
