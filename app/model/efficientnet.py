@@ -56,3 +56,4 @@ class_labels = ["Ideal", "Low", "Overweight"]
 predicted_label = class_labels[prediction]
 
 print(predicted_label)
+
