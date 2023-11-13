@@ -3,7 +3,9 @@ import logger from 'morgan';
 import path from 'path';
 import expressSession from "express-session";
 
-import loginRouter from './routes/login';
+import homeRouter from './routes/home';
+import signUpRouter from './routes/SignUp';
+import signInRouter from './routes/signIn';
 import sensorRouter from './routes/sensor';
 import regPetRouter from './routes/regPet';
 import uploadRouter from './routes/upload';
@@ -29,7 +31,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(logger('dev'));
 
-app.use('/', loginRouter);
+app.use('/', homeRouter);
+app.use('./signUp', signUpRouter);
+app.use('/signIn', signInRouter);
 app.use('/regPet', regPetRouter);
 app.use('/upload', uploadRouter);
 app.use('/sensor', sensorRouter);

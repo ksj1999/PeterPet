@@ -4,7 +4,7 @@ import { selectSql } from "../database/sql";
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.render('login');
+    res.render('signIn');
 });
 
 router.post('/', async (req, res) => {

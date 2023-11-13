@@ -40,7 +40,7 @@ CREATE TABLE BCSIMAGE(
 
 
 CREATE TABLE SENSOR(
-    SensTime DATETIME not null,
+    time DATETIME not null,
     DogId VARCHAR(45) NOT NULL,
     ax FLOAT NULL,
     ay FLOAT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE SENSOR(
     decibel FLOAT NULL,
     temp FLOAT NULL,
     humi FLOAT NULL,
-    PRIMARY KEY (SensTime),
+    PRIMARY KEY (time),
     FOREIGN KEY (DogId) REFERENCES DOG (DogId)
 );
 
