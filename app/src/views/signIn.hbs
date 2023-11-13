@@ -29,6 +29,7 @@
   <!-- responsive style -->
   <link href="css/responsive.css" rel="stylesheet" />
 
+
 </head>
 
 <body class="sub_page">
@@ -79,17 +80,83 @@
                 Sign In
               </h2>
             </div>
-            <form id="user" method="post" action='/signIn'>
-            <label for="id">ID</label>
-            <input id="id" name="id" type="text" required placeholder="Your ID">
+              
+              
+              <label for="userType">Select user type:</label>
+              {{!-- <div>
+                <input type="radio" id="admin" name="userType" value="admin" checked>
+                <input type="radio" id="owner" name="userType" value="owner">
+              </div>
+
+              <div class="toggle-switch">
+                <input type="checkbox" id="toggle-admin-owner" name="userType" value="admin" checked>
+                <label for="toggle-admin-owner">
+                  <span class="toggle-label">Admin</span>
+                  <span class="toggle-label">Owner</span>
+                </label>
+              </div> --}}
+
+
+              <div class="radio-group">
+                <input type="radio" id="admin" name="userType" value="admin" checked>
+                <label for="admin" class="toggle-label">Admin</label>
+
+                <input type="radio" id="owner" name="userType" value="owner">
+                <label for="owner" class="toggle-label-owner">Owner</label>
+              </div>
+              
+
+              <div id="adminForm" style="display: block;">
+              <label for="admin">Admin</label>
+               <form id="user" method="post" action='/signInAdmin'>
+
+              <label for="id">ID</label>
+              <input id="id" name="id" type="text" required placeholder="Your ID">
             
-            <label for="password">Password</label>
-            <input id="passwd" name='password' type="password" required placeholder="Your Password">
-            
-            <button>
+              <label for="password">Password</label>
+              <input id="passwd" name='password' type="password" required placeholder="Your Password">
+              <button>
                   Sign In
-                </button>
+              </button>
+
         </form>
+        </div>
+        <div id="ownerForm" style="display: none;">
+              <label for="owner">Owner</label>
+               <form id="user" method="post" action='/signInOwner'>
+
+              <label for="id">ID</label>
+              <input id="id" name="id" type="text" required placeholder="Your ID">
+            
+              <label for="password">Password</label>
+              <input id="passwd" name='password' type="password" required placeholder="Your Password">
+              <button>
+                  Sign In
+              </button>
+        </form>
+            </div>
+
+        <script>
+          const adminRadio = document.getElementById('admin');
+          const ownerRadio = document.getElementById('owner');
+          const adminForm = document.getElementById('adminForm');
+          const ownerForm = document.getElementById('ownerForm');
+
+          adminRadio.addEventListener('change', () => {
+            if (adminRadio.checked) {
+              adminForm.style.display = 'block';
+              ownerForm.style.display = 'none';
+            }
+          });
+
+          ownerRadio.addEventListener('change', () => {
+            if (ownerRadio.checked) {
+              adminForm.style.display = 'none';
+              ownerForm.style.display = 'block';
+            }
+          });
+        </script>
+            
           </div>
         </div>
         <div class="col-md-6">
