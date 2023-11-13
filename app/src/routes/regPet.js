@@ -4,9 +4,9 @@ import { insertSql } from "../database/sql";
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    const userId = req.session.userId;
-    res.render('regPet', { userId: userId });
-    console.log(userId);
+    const ownerId = req.session.ownerId;
+    res.render('regPet', { ownerId: ownerId });
+    console.log(ownerId);
 });
 
 router.post('/', (req, res) => {
@@ -14,10 +14,11 @@ router.post('/', (req, res) => {
 
     const data = {
         DogId: vars.dogid,
-        UserId: req.session.userId,
+        OwnerId: req.session.ownerId,
         Breed: vars.breed,
         Gender: vars.gender,
         Weight: vars.weight,  
+        Neuter: vars.Neuter
     };
 
     insertSql.setDog(data);

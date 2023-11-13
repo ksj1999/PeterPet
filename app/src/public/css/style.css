@@ -452,6 +452,7 @@ a:focus {
 
 .radio-group {
   display: flex;
+  margin-bottom: 20px;
 }
 
 .radio-group input {
@@ -467,7 +468,7 @@ a:focus {
 }
 
 .radio-group input:checked + label {
-  background-color: #6bb7be;
+  background-color: #f89646;
   color: #fff;
 }
 

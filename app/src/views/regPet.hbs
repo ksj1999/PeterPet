@@ -82,10 +82,10 @@
             <form name="dog" method="post" action="/regPet">
         
             <label for="dogid">Id</label>
-            <input id="dogid" name="dogid" type="text" required placeholder="반려동물의 이름을 입력해주세요" />
+            <input id="dogid" name="dogid" type="text" required placeholder="YOUR PET's NAME" />
             
             <label for="breed">Breed</label>
-            <input id="breed" name="breed" type="text" required placeholder="반려동물의 종을 입력해주세요" />
+            <input id="breed" name="breed" type="text" required placeholder="YOUR PET's BREED" />
 
             <label for="gender">Gender</label>
             <div class="radio-group">
@@ -94,10 +94,20 @@
 
                 <input type="radio" id="male" name="gender" value="M" required>
               <label class="radio-label" for="male">Male</label>
-              </div>
+              <br/>
+            </div>
+            
+            <label for="neuter">Neuter</label>
+            <div class="radio-group">
+                <input type="radio"  id="neuterY" name="neuter" value=1 checked required>
+                <label class="radio-label" for="neuterY">Yes</label>
+
+                <input type="radio" id="neuterN" name="neuter" value=0 required>
+              <label class="radio-label" for="neuterN">No</label>
+            </div>
 
             <label for="weight">Weight</label>
-            <input id="weight" name="weight" type="text" placeholder="반려동물의 몸무게를 입력해주세요 (0.0kg)" />
+            <input id="weight" name="weight" type="text" placeholder="YOUR PET's WEIGHT" />
 
             <button>
                   Insert

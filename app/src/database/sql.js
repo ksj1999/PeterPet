@@ -63,8 +63,8 @@ export const insertSql = {
     },
 
     setDog: async (data) => {
-        const sql = `INSERT INTO dog VALUES (?, ?, ?, ?, ?, NULL)`;
-        const values = [data.DogId, data.UserId,  data.Breed, data.Gender, data.Weight];
+        const sql = `INSERT INTO dog VALUES (?, ?, ?, ?, ?,?, NULL)`;
+        const values = [data.DogId, data.OwnerId,  data.Breed, data.Gender,  data.Weight, data.Neuter];
         console.log(data);
         await promisePool.query(sql, values);
     },
