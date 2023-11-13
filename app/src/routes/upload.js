@@ -9,7 +9,7 @@ const upload = multer({ dest: 'uploads/' }); // 업로드된 파일을 저장할
 
 const runPythonScript = (imagePaths) => {
   return new Promise((resolve, reject) => {
-    const pythonProcess = spawn('python', ['efficientnet.py', ...imagePaths]);
+    const pythonProcess = spawn('python', ['model\\efficientnet.py', ...imagePaths]);
     
 
     let outputData = '';
