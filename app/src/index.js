@@ -7,6 +7,7 @@ import homeRouter from './routes/home';
 import signUpRouter from './routes/signUp';
 import signInAdminRouter from './routes/signInAdmin';
 import signInOwnerRouter from './routes/signInOwner';
+import ownerDashRouter from './routes/ownerDash';
 import sensorRouter from './routes/sensor';
 import regPetRouter from './routes/regPet';
 import uploadRouter from './routes/upload';
@@ -34,8 +35,10 @@ app.use(logger('dev'));
 
 app.use('/', homeRouter);
 app.use('/signUp', signUpRouter);
-app.use('/signInOwner', signInOwnerRouter);
 app.use('/signIn', signInAdminRouter);
+app.use('/signInOwner', signInOwnerRouter);
+app.use('/ownerDash',ownerDashRouter);
+
 app.use('/regPet', regPetRouter);
 app.use('/upload', uploadRouter);
 app.use('/sensor', sensorRouter);
