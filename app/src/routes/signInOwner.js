@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
                     location.href='/';
                 </script>`)
     } else if (req.session.owner.checkLogin ) {
-        res.redirect('/sensor');
+        res.redirect('/ownerDash');
     } 
 });
 
