@@ -8,7 +8,6 @@ def load_and_preprocess_images(image_paths, transform):
     images = []
     for path in image_paths:
         image = Image.open(path).convert('RGB')
-        image = image.resize((224, 224), Image.ANTIALIAS)  # Resizing the image
         if transform:
             image = transform(image)
         images.append(image)
@@ -18,17 +17,20 @@ def load_and_preprocess_images(image_paths, transform):
 def predict(model, images):
     model.eval()
     with torch.no_grad():
+        # Instead of predicting for each image, we predict for all and average the outputs
         outputs = torch.zeros([len(images), 3])  # Assuming 3 classes as in the original script
         for i, image in enumerate(images):
             output = model(image.unsqueeze(0))
             outputs[i] = torch.nn.functional.softmax(output, dim=1)
 
+        # Averaging the predictions
         avg_output = outputs.mean(dim=0)
         _, predicted = torch.max(avg_output, 0)
         return predicted.item()
 
 # Image transformation definition
 transform = transforms.Compose([
+    transforms.Resize((224, 224), Image.ANTIALIAS),# Resizing the image
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
@@ -54,3 +56,4 @@ class_labels = ["Ideal", "Low", "Overweight"]
 predicted_label = class_labels[prediction]
 
 print(predicted_label)
+
