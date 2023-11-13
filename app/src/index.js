@@ -5,7 +5,8 @@ import expressSession from "express-session";
 
 import homeRouter from './routes/home';
 import signUpRouter from './routes/signUp';
-import signInRouter from './routes/signIn';
+import signInAdminRouter from './routes/signInAdmin';
+import signInOwnerRouter from './routes/signInOwner';
 import sensorRouter from './routes/sensor';
 import regPetRouter from './routes/regPet';
 import uploadRouter from './routes/upload';
@@ -33,7 +34,8 @@ app.use(logger('dev'));
 
 app.use('/', homeRouter);
 app.use('/signUp', signUpRouter);
-app.use('/signIn', signInRouter);
+app.use('/signInOwner', signInOwnerRouter);
+app.use('/signIn', signInAdminRouter);
 app.use('/regPet', regPetRouter);
 app.use('/upload', uploadRouter);
 app.use('/sensor', sensorRouter);

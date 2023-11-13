@@ -28,6 +28,11 @@ export const selectSql = {
         const [result] = await promisePool.query(sql);
         return result;
     },
+    getOwner: async() => {
+        const sql = `select * from owner`;
+        const [result] = await promisePool.query(sql);
+        return result;
+    }
 }
 
 // insert query
