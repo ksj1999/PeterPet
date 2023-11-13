@@ -18,10 +18,11 @@ def load_and_preprocess_images(image_paths, transform):
 def predict(model, images):
     model.eval()
     with torch.no_grad():
-        outputs = torch.zeros([len(images), 3])  # Assuming 3 classes
+        outputs = torch.zeros([len(images), 3])  # Assuming 3 classes as in the original script
         for i, image in enumerate(images):
             output = model(image.unsqueeze(0))
             outputs[i] = torch.nn.functional.softmax(output, dim=1)
+
         avg_output = outputs.mean(dim=0)
         _, predicted = torch.max(avg_output, 0)
         return predicted.item()
