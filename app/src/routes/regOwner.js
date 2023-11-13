@@ -13,7 +13,7 @@ router.post('/', (req, res) => {
     const vars = req.body;
 
     const data = {
-        OwnerId: vars.ownerid,
+        OwnerId: vars.ownerId,
         UserId: req.session.userId,
         Password: vars.password,
         OwnerName: vars.ownerName,
