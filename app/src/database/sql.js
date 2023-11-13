@@ -34,9 +34,8 @@ export const selectSql = {
 export const insertSql = {
     setUser:async (data) => {
         const sql = `insert into user values (
-            ${data.UserId}, ${data.Password},${data.UserName},
-            ${data.Email}, now()
-        )`
+            "${data.UserId}", "${data.Password}","${data.UserName}",
+            "${data.Email}", now() )`
         console.log(data);
         await promisePool.query(sql);
     },
