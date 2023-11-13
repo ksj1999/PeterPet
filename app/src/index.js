@@ -8,11 +8,12 @@ import signUpRouter from './routes/signUp';
 import signInAdminRouter from './routes/signInAdmin';
 import signInOwnerRouter from './routes/signInOwner';
 import ownerDashRouter from './routes/ownerDash';
-import userDashRouter from './routes/userDash';
+
 import sensorRouter from './routes/sensor';
 import regOwnerRouter from './routes/regOwner';
 import regPetRouter from './routes/regPet';
 import uploadRouter from './routes/upload';
+import resultRouter from './routes/result';
 
 const PORT = 5000;
 const app = express();
@@ -44,7 +45,7 @@ app.use('/ownerDash',ownerDashRouter);
 app.use('/regOwner', regOwnerRouter);
 app.use('/regPet', regPetRouter);
 app.use('/upload', uploadRouter);
-app.use('/userDash', userDashRouter);
+app.use('/result', resultRouter)
 
 app.use('/sensor', sensorRouter);
 
