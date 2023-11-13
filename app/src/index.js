@@ -4,7 +4,7 @@ import path from 'path';
 import expressSession from "express-session";
 
 import homeRouter from './routes/home';
-import signUpRouter from './routes/SignUp';
+import signUpRouter from './routes/signUp';
 import signInRouter from './routes/signIn';
 import sensorRouter from './routes/sensor';
 import regPetRouter from './routes/regPet';
@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(logger('dev'));
 
 app.use('/', homeRouter);
-app.use('./signUp', signUpRouter);
+app.use('/signUp', signUpRouter);
 app.use('/signIn', signInRouter);
 app.use('/regPet', regPetRouter);
 app.use('/upload', uploadRouter);
