@@ -1,4 +1,4 @@
-import mysql.connector
+#import mysql.connector
 import sqlite3
 import time
 from datetime import datetime, timedelta
@@ -10,16 +10,16 @@ import schedule
 from joblib import dump, load
 
 # 모델 로드
-loaded_model = load('random_forest_model.joblib')
+loaded_model = load(r'C:\Users\kwon\Desktop\PeterPet\app\randomf\random_forest_model.joblib')
 
-# MySQL 연결 설정
-mydb = mysql.connector.connect(
-    host="r",
-    user="r",
-    password="r",
-    database="r"
-)
-mycursor = mydb.cursor()
+# # MySQL 연결 설정
+# mydb = mysql.connector.connect(
+#     host="r",
+#     user="r",
+#     password="r",
+#     database="r"
+# )
+# mycursor = mydb.cursor()
 
 
 # 서버에서 받아와야 하는 변수
