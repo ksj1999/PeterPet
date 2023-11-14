@@ -28,7 +28,7 @@ min_rer = round(rer/1440, 2)
 # mycursor = mydb.cursor()
 
 # 모델 로드
-loaded_model = load('python/random_forest_model.joblib')
+loaded_model = load('app/randomf/random_forest_model.joblib')
 
 # 센서값 입력 함수 
 def get_data_and_diff():
@@ -55,5 +55,3 @@ elif prediction == 1:
 elif prediction == 2:
     kcal = min_rer*10
     insert_activity(acttime, dogid, 0, 0, 1, kcal)
-
-print(kcal)
