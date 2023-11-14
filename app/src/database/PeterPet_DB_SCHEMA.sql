@@ -8,7 +8,7 @@ CREATE TABLE User (
 );
 
 CREATE TABLE Owner (
-    OwnerId VARCHAR(45) NOT NULL,S
+    OwnerId VARCHAR(45) NOT NULL,
     UserId VARCHAR(45) NOT NULL,
     Password VARCHAR(45) NOT NULL,
     OwnerName VARCHAR(45) NOT NULL,
@@ -84,17 +84,16 @@ CREATE TABLE  DISPENSER (
     FOREIGN KEY (DogId) REFERENCES DOG (DogId)
 );
 
-Insert into USER values ('yoon8720', 'king01', 'dungdung2', 'yoon8720@nate.com', now());
-Insert into USER values ('kaya01', 'kwon0871', 'android369', 'kaya@gmail.com', now());
+Insert into USER values ('COMPANY_A', '1234', 'MinSeon-Kim', 'yoon8720@nate.com', now());
+Insert into USER values ('COMPANY_B', '1234', 'SeoYoung-Yun', 'kaya@gmail.com', now());
 
-Insert into Owner values ('sy', 'yoon8720', '1234', 'seoyoung', 'seoyoung@gmail.com', now());
-Insert into Owner values ('ms', 'yoon8720', '1234', 'minseon', 'minseon@gmail.com', now());
-Insert into Owner values ('hj', 'yoon8720', '1234', 'hyeonji', 'hyeonji@gmail.com', now());
+Insert into Owner values ('kaya', 'COMPANY_A', '1234', 'SeongJun-Kwon', 'alm1young@gmail.com', now());
+Insert into Owner values ('dungdung2', 'COMPANY_A', '1234', 'SeoYoung-Yun', 's38ounn@gmail.com', now());
+Insert into Owner values ('bbaro', 'COMPANY_A', '1234', 'HyeonJi-Park', 'amslji@gmail.com', now());
 
-
-Insert into DOG values ('dung2', 'sy', 'shihtzu', 'M', 8.7, true, 'Normal');
-Insert into DOG values ('happy', 'ms', 'maltese', 'M', 3.1, true, 'Obesity');
-Insert into DOG values ('bbobbi', 'hj', 'shihtzu', 'F', 2.7, false,'Underweight');
+Insert into DOG values ('dung2', 'kaya', 'shihtzu', 'M', 8.7, true, 'Normal');
+Insert into DOG values ('happy', 'dungdung2', 'maltese', 'M', 3.1, true, 'Obesity');
+Insert into DOG values ('bbobbi', 'bbaro', 'shihtzu', 'F', 2.7, false,'Underweight');
 
 Insert into BCSIMAGE values(1, 'dung2', null);
 

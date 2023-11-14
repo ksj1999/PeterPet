@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 
 const router = express.Router();
+
 const upload = multer({ dest: 'uploads/' });
 
 const runPythonScript = (imagePaths) => {
@@ -42,20 +43,24 @@ const clearUploadsDirectory = () => {
 };
 
 router.get('/', (req, res) => {
-    res.render('upload');
+    const dogId = req.session.dogId;
+    res.render('upload', { dogId: dogId });
+    console.log(dogId);
+    console.log(req.session);
+
 });
 
 router.post('/', upload.array('photos', 13), (req, res) => {
-    const DogId = req.body.DogId;
+    const dogId = req.session.dogId;
     const photos = req.files;
 
-    if (!DogId || !photos || photos.length === 0) {
+    if (!dogId || !photos || photos.length === 0) {
         return res.status(400).send("DogId and photos are required.");
     }
 
     const imagePaths = photos.map(photo => photo.path);
     imagePaths.forEach(Photo => {
-        insertSql.setPhoto(DogId, Photo);
+        insertSql.setPhoto(dogId, Photo);
     });
 
     runPythonScript(imagePaths)

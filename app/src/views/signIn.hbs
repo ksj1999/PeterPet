@@ -83,20 +83,7 @@
               
               
               <label for="userType">Select user type:</label>
-              {{!-- <div>
-                <input type="radio" id="admin" name="userType" value="admin" checked>
-                <input type="radio" id="owner" name="userType" value="owner">
-              </div>
-
-              <div class="toggle-switch">
-                <input type="checkbox" id="toggle-admin-owner" name="userType" value="admin" checked>
-                <label for="toggle-admin-owner">
-                  <span class="toggle-label">Admin</span>
-                  <span class="toggle-label">Owner</span>
-                </label>
-              </div> --}}
-
-
+              {{!-- owner 와 admin 중 하나 선택 --}}
               <div class="radio-group">
                 <input type="radio" id="admin" name="userType" value="admin" checked>
                 <label for="admin" class="toggle-label">Admin</label>
@@ -107,10 +94,9 @@
               
 
               <div id="adminForm" style="display: block;">
-              <label for="admin">Admin</label>
                <form id="user" method="post" action='/signIn'>
 
-              <label for="id">ID</label>
+              <label for="id">Company ID</label>
               <input id="id" name="id" type="text" required placeholder="Your ID">
             
               <label for="password">Password</label>
@@ -122,10 +108,9 @@
         </form>
         </div>
         <div id="ownerForm" style="display: none;">
-              <label for="owner">Owner</label>
                <form id="user" method="post" action='/signInOwner'>
 
-              <label for="id">ID</label>
+              <label for="id">Owner ID</label>
               <input id="id" name="id" type="text" required placeholder="Your ID">
             
               <label for="password">Password</label>
@@ -136,6 +121,7 @@
         </form>
             </div>
 
+        {{!-- 둘 중 하나의 form 태그만 나오도록 하는 JS --}}
         <script>
           const adminRadio = document.getElementById('admin');
           const ownerRadio = document.getElementById('owner');
@@ -156,6 +142,8 @@
             }
           });
         </script>
+
+        {{!--  --}}
             
           </div>
         </div>

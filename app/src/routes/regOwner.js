@@ -20,6 +20,7 @@ router.post('/', (req, res) => {
         Email: vars.email,  
     };
 
+    req.session.ownerId = vars.ownerId;
     insertSql.setOwner(data);
     res.redirect('/regPet');
 });
