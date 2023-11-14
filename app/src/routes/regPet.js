@@ -8,6 +8,7 @@ router.get('/', (req, res) => {
 
     res.render('regPet', { ownerId: ownerId });
     console.log(ownerId);
+    
 });
 
 router.post('/', (req, res) => {
@@ -16,7 +17,7 @@ router.post('/', (req, res) => {
     console.log(neuterValue);
 
     const data = {
-        DogId: vars.dogid,
+        DogId: vars.dogId,
         OwnerId: req.session && req.session.ownerId,
         Breed: vars.breed,
         Gender: vars.gender,
@@ -24,6 +25,7 @@ router.post('/', (req, res) => {
         Neuter: neuterValue
     };
 
+    req.session.dogId = vars.dogId;
     insertSql.setDog(data);
     res.redirect('/upload');
 });
