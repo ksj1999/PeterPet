@@ -55,3 +55,5 @@ elif prediction == 1:
 elif prediction == 2:
     kcal = min_rer*10
     insert_activity(acttime, dogid, 0, 0, 1, kcal)
+
+print(kcal)
