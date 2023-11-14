@@ -52,8 +52,7 @@ images = load_and_preprocess_images(image_paths, transform)
 prediction = predict(model, images)
 
 # Map the predicted index to the corresponding label
-class_labels = ["Ideal", "Low", "Overweight"]
+class_labels = ["Normal", "Underweight", "Obesity"]
 predicted_label = class_labels[prediction]
 
 print(predicted_label)
-
