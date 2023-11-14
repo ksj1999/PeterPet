@@ -3,10 +3,10 @@ import mysql from 'mysql2';
 require("dotenv").config();
 
 const pool = mysql.createPool({
-    host: 'localhost',
+    host: '210.111.178.93',
     port: 3306,
-    user: 'root',
-    password: 'gging00100!',
+    user: 'dungdung2',
+    password: 'advantechlove1234',
     database: 'PeterPet',
 });
 

@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 
 const router = express.Router();
+
 const upload = multer({ dest: 'uploads/' });
 
 const runPythonScript = (imagePaths) => {
@@ -45,6 +46,7 @@ router.get('/', (req, res) => {
     const dogId = req.session.dogId;
     res.render('upload', { dogId: dogId });
     console.log(dogId);
+    console.log(req.session);
 
 });
 
