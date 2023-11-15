@@ -210,6 +210,7 @@ a:focus {
 }
 
 /*end header section*/
+
 /* slider section */
 .slider_section {
   -webkit-box-flex: 1;
@@ -326,6 +327,7 @@ a:focus {
 }
 
 
+/* about section */
 .about_section {
   background-color: #f9fafa;
 }
@@ -361,6 +363,17 @@ a:focus {
   color: #6bb7be;
 }
 
+.about_section .detail-box .prediction-title{
+  font-size: 24px;
+}
+
+.about_section .detail-box .prediction-result{
+  font-size: 24px;
+  font-weight: 500;
+  color:#f89646;
+}
+
+/* contact section */
 .contact_section {
   position: relative;
   background-color: #f9fafa;
@@ -453,7 +466,7 @@ a:focus {
 
 
 
-
+/* radio session */
 .radio-group {
   display: flex;
   margin-bottom: 20px;
