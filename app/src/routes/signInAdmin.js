@@ -29,11 +29,11 @@ router.post('/', async (req, res) => {
     if (req.session.user == undefined) {
         console.log('login failed!');
         res.send(`<script>
-                    alert('login failed!');
+                    alert('아이디 혹은 비밀번호를 확인하세요!');
                     location.href='/';
                 </script>`)
     } else if (req.session.user.checkLogin ) {
-        res.redirect('/regOwner');
+        res.redirect('/userMain');
     } 
 });
 
