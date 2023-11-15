@@ -4,7 +4,7 @@ import { insertSql } from "../database/sql";
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    const userId = req.session.userId;
+    const userId = req.query.userId;
     res.render('regOwner', { userId: userId });
     console.log(userId);
 });
@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
 
     const data = {
         OwnerId: vars.ownerId,
-        UserId: req.session.userId,
+        UserId: req.query.userId,
         Password: vars.password,
         OwnerName: vars.ownerName,
         Email: vars.email,  

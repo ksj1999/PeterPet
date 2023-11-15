@@ -174,57 +174,66 @@
   </section>
 
   <!-- end about section -->
-
-  <!-- contact section -->
-  <section class="contact_section  long_section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form_container">
-            <div class="heading_container">
-              <h2>
-                Contact Us
-              </h2>
+<!-- contact section -->
+<section class="contact_section  long_section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form_container">
+          <div class="heading_container">
+            <h2>
+              Contact Us
+            </h2>
+          </div>
+          <form id="contactForm">
+            <div>
+              <input type="text" placeholder="Your Name" />
             </div>
-            <form action="">
-              <div>
-                <input type="text" placeholder="Your Name" />
-              </div>
-              <div>
-                <input type="text" placeholder="Phone Number" />
-              </div>
-              <div>
-                <input type="email" placeholder="Email" />
-              </div>
-              <div>
-                <input type="text" class="message-box" placeholder="Message" />
-              </div>
-              <div class="btn_box">
-                <button>
-                  SEND
-                </button>
-              </div>
-            </form>
-          </div>
+            <div>
+              <input type="text" placeholder="Phone Number" />
+            </div>
+            <div>
+              <input type="email" placeholder="Email" />
+            </div>
+            <div>
+              <input type="text" class="message-box" placeholder="Message" />
+            </div>
+            <div class="btn_box">
+              <button id="sendMessageBtn">
+                SEND
+              </button>
+            </div>
+          </form>
         </div>
-        <div class="col-md-6">
-          <div class="img-box">
-            <img src="images/contact.png" alt="">
-          </div>
-          </div>
+      </div>
+      <div class="col-md-6">
+        <div class="img-box">
+          <img src="images/contact.png" alt="">
         </div>
       </div>
     </div>
-  </section>
-  <!-- end contact section -->
+  </div>
+</section>
+<!-- end contact section -->
 
-  <!-- jQery -->
-  <script src="js/jquery-3.4.1.min.js"></script>
-  <!-- bootstrap js -->
-  <script src="js/bootstrap.js"></script>
-  <!-- custom js -->
-  <script src="js/custom.js"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="js/bootstrap.js"></script>
+<!-- Custom JS -->
+<script src="js/custom.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $("#sendMessageBtn").click(function (event) {
+      event.preventDefault();
+      alert("문의가 접수 되었습니다");
+      $("#contactForm")[0].reset();
+    });
+  });
+</script>
+
 
 </body>
-
 </html>
