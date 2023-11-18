@@ -9,9 +9,6 @@ router.get('/', (req, res) => {
 
 router.post('/', async (req, res) => {
     const vars = req.body;
-    
-    console.log(req.body);
-    console.log(req.session);
     const users = await selectSql.getUser();
 
     users.map((user) => {
