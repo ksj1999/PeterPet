@@ -1,38 +1,98 @@
 import express from 'express';
+import { exec } from 'child_process';
 import { ApplyQuery } from '../database/sql';
+import { insertSql } from "../database/sql";
 
 const router = express.Router();
 
-router.get('/', (_req, res) => {
-    res.render('sensor', {data: []});
-})
+function translatePredictionToActivity(prediction) {
+    let stop = 0, walk = 0, run = 0;
+    if (prediction !== null && !isNaN(prediction)) {
+        switch (prediction) {
+            case 0:
+                stop = 1;
+                break;
+            case 1:
+                walk = 1;
+                break;
+            case 2:
+                run = 1;
+                break;
+        }
+    }
+    return [stop, walk, run];
+}
 
-router.post('/', async(req, res)=> {
+router.get('/', (_req, res) => {
+    res.render('sensor', { data: [] });
+});
+
+router.post('/', async (req, res) => {
     const vars = req.body;
-    const data={
-        Query: vars.Query
-    };
-    console.log('data\n', data.Query);
+    console.log("Received POST data:", vars);
     let all_data = [];
 
     try {
-        const result =  await ApplyQuery.applyquery(data.Query);
-        console.log('result\n', result);
+        // Execute the sensor data insertion query
+        const sensorResult = await ApplyQuery.applyquery(vars.Query);
+        all_data.push('Sensor Query:');
+        all_data.push(vars.Query);
+        all_data.push('Sensor Result:');
+        all_data.push(JSON.stringify(sensorResult));
 
-        all_data.push('Query:')
-        all_data.push(data.Query)
-        all_data.push('Result:')
-        for (let i = 0; i < result.length; i++){
-            all_data.push(JSON.stringify(result[i])); 
+        // Extract values from the Query string
+        const regex = /'([^']*)'|\b(\d+\.\d+|\d+)\b/g;
+        let matches, values = [];
+        while ((matches = regex.exec(vars.Query))) {
+            values.push(matches[1] || matches[2]);
         }
-        console.log('all_data\n', all_data);
-    }
-    catch(error){
+
+        console.log("Extracted values:", values);
+
+        // Ensure you have the correct number of arguments
+        if (values.length !== 11) {
+            throw new Error("Incorrect number of arguments extracted from the query.");
+        }
+
+        // Extract values from the values array
+        const [time, DogId, ax, ay, az, gx, gy, gz, decibel, temp, humi] = values;
+
+        // Construct the command with arguments for the Python script
+        const pythonCommand = `python randomf\\randomforest.py ${time} ${DogId} ${ax} ${ay} ${az} ${gx} ${gy} ${gz}`;
+
+        exec(pythonCommand, async (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Execution error: ${error}`);
+                all_data.push('Error executing Python script');
+                res.render('sensor', { data: all_data });
+                return;
+            }
+
+            console.log(`Python script raw output: ${stdout}`); 
+            const predictionMatch = stdout.trim().match(/\d+/);
+            const prediction = predictionMatch ? parseInt(predictionMatch[0], 10) : null;
+
+            console.log(`Received prediction: ${prediction}`);
+            const [stop, walk, run] = translatePredictionToActivity(prediction);
+
+            const data = {
+                DogId: DogId,
+                Stop: stop,
+                Walk: walk,
+                Run: run
+            };
+            insertSql.setActivity(data);
+
+            all_data.push(`Python script output: ${stdout}`);
+            res.render('sensor', { data: all_data });
+        });
+
+    } catch (error) {
         console.error('Error:', error.message);
-        all_data.push(`${data.Query} is not a query, or there is an error.`);
+        all_data.push('There was an error.');
         all_data.push('Please check.');
+        res.render('sensor', { data: all_data });
     }
-    res.render('sensor', {data: all_data});
-})
+});
 
 module.exports = router;
