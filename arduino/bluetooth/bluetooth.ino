@@ -12,7 +12,6 @@ const char* UUID_gx   = "84582cd4-3df0-4e73-9496-29010d7445dd";
 const char* UUID_gy   = "84582cd5-3df0-4e73-9496-29010d7445dd";
 const char* UUID_gz   = "84582cd6-3df0-4e73-9496-29010d7445dd";
 
-
 // BLE Service
 BLEService myService(UUID_serv); 
 
@@ -23,7 +22,6 @@ BLEFloatCharacteristic  chAZ(UUID_az,  BLERead|BLENotify);
 BLEFloatCharacteristic  chGX(UUID_gx,  BLERead|BLENotify);
 BLEFloatCharacteristic  chGY(UUID_gy,  BLERead|BLENotify);
 BLEFloatCharacteristic  chGZ(UUID_gz,  BLERead|BLENotify);
-
 
 void setup() 
   {

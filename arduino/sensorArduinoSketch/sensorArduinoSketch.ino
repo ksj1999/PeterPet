@@ -29,7 +29,7 @@ bool waitForResponse(const char* expectedResponse, unsigned long timeout, bool p
       char c = Serial1.read();
       response += c;
       if (printResponse) {
-        Serial.write(c);
+        // Serial.write(c);
       }
       if (response.indexOf(expectedResponse) != -1) {
         return true;
@@ -41,15 +41,16 @@ bool waitForResponse(const char* expectedResponse, unsigned long timeout, bool p
 }
 
 void setup() {
-  Serial.begin(9600);  // 시리얼 통신 초기화
+  delay(1000);
+  // Serial.begin(9600);  // 시리얼 통신 초기화
   Serial1.begin(9600);
   if (!IMU.begin()) { //LSM9DSI센서 시작
-    Serial.println("LSM9DSI센서 오류!");
+  // Serial.println("LSM9DSI센서 오류!");
     while (1);
   }
   
   if (!HTS.begin()) { //HTS221센서 시작
-    Serial.println("HTS221센서 오류!");
+    // Serial.println("HTS221센서 오류!");
     while (1);
   }
   while (!Serial);
@@ -60,15 +61,15 @@ void setup() {
   // 아날로그 입력 해상도 설정 (12비트)
   analogReadResolution(12);
 
-  Serial.println("Connecting to WiFi...");
-  Serial1.println("AT+CWJAP=\"" + ssid + "\",\"" + password + "\"");
+  // Serial.println("Connecting to WiFi...");
+  // Serial1.println("AT+CWJAP=\"" + ssid + "\",\"" + password + "\"");
 
-  if (waitForResponse("OK", 10000)) {
-    Serial.println("WiFi connected");
-  } else {
-    Serial.println("WiFi connection timeout");
-    while (1);
-  }
+  // if (waitForResponse("OK", 10000)) {
+  //   Serial.println("WiFi connected");
+  // } else {
+  //   Serial.println("WiFi connection timeout");
+  //   while (1);
+  // }
   delay(1000);
 }
 
@@ -120,21 +121,22 @@ void loop() {
   humi = HTS.readHumidity();
   delay(2000);
 
-  Serial.println("Connecting to web server...");
+  //Serial.println("Connecting to web server...");
   Serial1.println("AT+CIPSTART=\"TCP\",\"" + serverIP + "\"," + String(serverPort));
+
     if (waitForResponse("OK", 10000)) {
-    Serial.println("TCP connected");
+    //Serial.println("TCP connected");
   } else {
-    Serial.println("TCP connection timeout");
+    //Serial.println("TCP connection timeout");
     Serial1.println("AT+CIPCLOSE");
     delay(1000);
     return;
   }
   delay(2000);
   
-  Serial.println("----------------------------------------------------");
+  //Serial.println("----------------------------------------------------");
 
-  Serial.println("Send data...");
+  //Serial.println("Send data...");
 
   String query = "Query=INSERT%20INTO%20sensor%20VALUES%20(now(),%22dung2%22,%20" + String(ax, 2) +
                  "," + String(ay, 2) +
@@ -147,9 +149,9 @@ void loop() {
                  "," + String(humi, 2) +
                  ");";
 
-  Serial.println(query);
+  //Serial.println(query);
   int contentLength = query.length();
-  Serial.println(contentLength);
+  //Serial.println(contentLength);
 
 
   Serial1.print("AT+CIPSEND=");
@@ -158,14 +160,14 @@ void loop() {
   delay(2000);
 
   if (waitForResponse(">", 10000)) {
-    Serial.println("Ready to send");
+   // Serial.println("Ready to send");
   } else {
 
     delay(1000);
     return;
   }
 
-  Serial.println("----------------------------------------------------");
+  //Serial.println("----------------------------------------------------");
 
   delay(5000);
 
@@ -177,20 +179,20 @@ void loop() {
   Serial1.println("");
   Serial1.println(query);
 
-  Serial.println("Data sent. Waiting for response...");
-  while(Serial1.available()){
-    Serial.write(Serial1.read());
-    Serial.print(".");
-  }
-  delay(20000);
+  // Serial.println("Data sent. Waiting for response...");
+  // while(Serial1.available()){
+  //   Serial.write(Serial1.read());
+  //   Serial.print(".");
+  // }
+  // delay(20000);
 
-  if (Serial1.find("ERROR")) {
-    Serial.println("Send error");
-    delay(1000);
-    return;
-  }
+  // if (Serial1.find("ERROR")) {
+  //   Serial.println("Send error");
+  //   delay(1000);
+  //   return;
+  // }
 
   Serial1.println("AT+CIPCLOSE");
-  Serial.println("\n==================================\n");
+ // Serial.println("\n==================================\n");
   delay(2000);
 }
