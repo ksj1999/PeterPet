@@ -78,4 +78,15 @@ export const insertSql = {
             console.error("Error inserting photo:", error);
         }
     },
+
+    //Insert into Activity values ('2023-11-06 10:30:00', 'dung2', 0, 1, 0, 1);
+    setActivity: async (data) => {
+            const sql = `insert into Activity values (
+                now(), '${data.DogId}', ${data.Stop},${data.Walk},
+                ${data.Run}, NULL
+            )`
+            console.log(data);
+            console.log(sql);
+            await promisePool.query(sql);
+        },
 };
