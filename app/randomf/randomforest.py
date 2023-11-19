@@ -4,7 +4,7 @@ import pandas as pd
 
 # Corrected indexing for reading arguments from command line
 time = sys.argv[2]
-DogId = sys.argv[3]
+SensorId = sys.argv[3]
 ax = float(sys.argv[4])
 ay = float(sys.argv[5])
 az = float(sys.argv[6])
