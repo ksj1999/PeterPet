@@ -103,8 +103,6 @@ void loop() {
 
     // 데시벨 값 계산
     decibel = 20 * log10(maxMagnitude);
-
-    // 데시벨 값을 시리얼 모니터에 출력}
   }
 
   //가속도센서

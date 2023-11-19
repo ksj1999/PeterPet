@@ -1,7 +1,6 @@
 import express from 'express';
 import { exec } from 'child_process';
 import { ApplyQuery } from '../database/sql';
-import { insertSql } from "../database/sql";
 
 const router = express.Router();
 
@@ -59,10 +58,10 @@ router.post('/', async (req, res) => {
         const formattedTime = currentTime.toISOString().replace('T', ' ').substring(0, 19);
 
         // Extract values from the values array
-        const [_, DogId, ax, ay, az, gx, gy, gz, decibel, temp, humi] = values;
+        const [_, PetId, ax, ay, az, gx, gy, gz, decibel, temp, humi] = values;
 
         // Construct the command with arguments for the Python script
-        const pythonCommand = `python randomf\\randomforest.py ${formattedTime} ${DogId} ${ax} ${ay} ${az} ${gx} ${gy} ${gz}`;
+        const pythonCommand = `python randomf\\randomforest.py ${formattedTime} ${PetId} ${ax} ${ay} ${az} ${gx} ${gy} ${gz}`;
 
         exec(pythonCommand, async (error, stdout, stderr) => {
             if (error) {
@@ -80,12 +79,11 @@ router.post('/', async (req, res) => {
             const [stop, walk, run] = translatePredictionToActivity(prediction);
 
             const data = {
-                DogId: DogId,
+                PetId: PetId,
                 Stop: stop,
                 Walk: walk,
                 Run: run
             };
-            insertSql.setActivity(data);
 
             all_data.push(`Python script output: ${stdout}`);
             res.render('sensor', { data: all_data });

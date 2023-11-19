@@ -24,12 +24,12 @@ export const ApplyQuery = {
 //select query
 export const selectSql = {
     getUser: async () => {
-        const sql = `select * from user`;
+        const sql = `select * from users`;
         const [result] = await promisePool.query(sql);
         return result;
     },
     getOwner: async() => {
-        const sql = `select * from owner`;
+        const sql = `select * from owners`;
         const [result] = await promisePool.query(sql);
         return result;
     }
@@ -38,14 +38,14 @@ export const selectSql = {
 // insert query
 export const insertSql = {
     setUser:async (data) => {
-        const sql = `insert into user values (
+        const sql = `insert into users values (
             "${data.UserId}",  "${data.Password}",  "${data.UserName}", "${data.Email}", now()
         )`
         console.log(data);
         await promisePool.query(sql);
     },
     setOwner: async(data) => {
-        const sql = `insert into owner values (
+        const sql = `insert into owners values (
             "${data.OwnerId}", "${data.UserId}",  "${data.Password}", 
              "${data.OwnerName}", "${data.Email}", now()
         )`
@@ -53,7 +53,7 @@ export const insertSql = {
         await promisePool.query(sql);
     },
     setSensor:async (data) => {
-        const sql = `insert into sensor values (
+        const sql = `insert into sensordata values ( 1,
             now(), ${data.ax}, ${data.ay},${data.az},
             ${data.gx}, ${data.gy}, ${data.gz},
             ${data.decibel}, ${data.temp}, ${data.humi}
@@ -63,26 +63,16 @@ export const insertSql = {
     },
 
     setDog: async (data) => {
-        const sql = `INSERT INTO dog VALUES (?, ?, ?, ?, ?,?, NULL)`;
-        const values = [data.DogId, data.OwnerId,  data.Breed, data.Gender,  data.Weight, data.Neuter];
+        const sql = `INSERT INTO Pets VALUES (?, ?, ?, ?, ?,?, NULL)`;
+        const values = [data.PetId, data.OwnerId,  data.Breed, data.Gender,  data.Weight, data.Neuter];
         console.log(data);
         await promisePool.query(sql, values);
     },
 
-    setPhoto: async (DogId, Photo) => {
-        try {
-            const sql = `INSERT INTO BCSIMAGE(DogId, Photo) VALUES (?, ?)`;
-            await promisePool.query(sql, [DogId, Photo]);
-            console.log("Photo inserted successfully");
-        } catch (error) {
-            console.error("Error inserting photo:", error);
-        }
-    },
-
     //Insert into Activity values ('2023-11-06 10:30:00', 'dung2', 0, 1, 0, 1);
     setActivity: async (data) => {
-            const sql = `insert into Activity values (
-                now(), '${data.DogId}', ${data.Stop},${data.Walk},
+            const sql = `insert into PetActivities values (
+                now(), '${data.PetId}', ${data.Stop},${data.Walk},
                 ${data.Run}, NULL
             )`
             console.log(data);
