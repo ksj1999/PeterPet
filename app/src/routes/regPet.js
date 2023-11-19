@@ -27,7 +27,7 @@ router.post('/', (req, res) => {
 
     req.session.petId = vars.petId;
     insertSql.setDog(data);
-    res.redirect('/upload');
+    res.redirect('/qr');
 });
 
 module.exports = router;

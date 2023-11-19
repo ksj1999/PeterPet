@@ -170,36 +170,40 @@
     </header>
     <!-- end header section -->
   </div>
+
       <!-- dash section -->
   <section class="about_section layout_padding long_section">
     <div class="container">
-<div class="main_page">
-	<main align="center">
-		<div align="center">
-			<div></div>
-			<div id="frame">
-				<div id="loadingMessage">
-					🎥 비디오 스트림에 액세스 할 수 없습니다<br/>웹캠이 활성화되어 있는지 확인하십시오
+		<div class="main_page">
+			<main align="center">
+				<div align="center">
+					<div id="frame">
+						<div id="loadingMessage">
+							비디오 스트림에 액세스 할 수 없습니다<br/>웹캠이 활성화되어 있는지 확인하십시오
+						</div>
+					<canvas id="canvas"></canvas>
 				</div>
-				<canvas id="canvas"></canvas>
-			</div>
+				</div>
+				<input type="button" id="button1" onclick="openCamera();" value="카메라 열기" style="width:97%;height:30px"/>
+				<br/>
+				
+				<div id="test" width="100%">
+				<h2>QR 코드 스캔 결과</h2>
+					<div id="output">
+						<div id="outputMessage"></div>
+						<div id="outputLayer" hidden>
+						<span id="outputData"></span>
+						</div>
+					</div>
+				</div>
+				 <div class="btn-box">
+					<a href="/upload" class="btn1">
+                        SIGN UP
+                	</a>
+				 </div>
+			</main>
 		</div>
-		<input type="button" id="button1" onclick="openCamera();" value="카메라 열기" style="width:97%;height:30px"/>
-		<br/>
-		<div id="test" width="100%">
-			<h2>QR 코드 스캔 결과</h2>
-			<div id="output">
-				<div id="outputMessage">
-					
-				</div>
-				<div id="outputLayer" hidden>
-					<span id="outputData"></span>
-				</div>
-			</div>
-		</div>
-	</main>
-</div>
-</div>
+	</div>
 </section>
 
   <!-- jQery -->
