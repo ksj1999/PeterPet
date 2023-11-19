@@ -79,7 +79,7 @@ router.post('/', async (req, res) => {
             const [stop, walk, run] = translatePredictionToActivity(prediction);
 
             const data = {
-                PetId: PetId,
+                SensorId: SensorId,
                 Stop: stop,
                 Walk: walk,
                 Run: run
