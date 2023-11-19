@@ -340,6 +340,7 @@ a:focus {
 
 .about_section .img-box img {
   width: 100%;
+  height: auto;
 }
 
 .about_section .detail-box p {
@@ -358,6 +359,10 @@ a:focus {
   transition: all .2s;
 }
 
+.about_section .detail-box p{
+  font-size: 18px;
+}
+
 .about_section .detail-box a:hover {
   background-color: transparent;
   color: #6bb7be;
@@ -371,6 +376,13 @@ a:focus {
   font-size: 24px;
   font-weight: 500;
   color:#f89646;
+}
+
+
+.about_section h3{
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 15px;
 }
 
 /* contact section */

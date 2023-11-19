@@ -2,96 +2,20 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Query Apply</title>
-    <style>
-        body {
-            background-color: #fff8e7;
-            margin: 50px 25px auto;
-        }
-
-        .container {
-            margin: 20px auto;
-            padding: 50px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-
-        label {
-            font-weight: bold;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-
-        input[type="submit"] {
-            background-color: #526534;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 10px;
-            font-size: 15px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            transition: background-color 0.3s; 
-        }
-        
-        input[type="submit"]:hover {
-            background-color: #b2bda0; 
-        }
-
-         input {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 10px;
-            margin: 10px 0;
-            width: 100%;
-        }
-        
-
-
-        .result {
-            margin-top: 20px;
-        }
-
-        .result p {
-            margin-bottom: 5px;
-        }
-    </style>
+    <title>sensor</title>
 </head>
 <body>
     <div class="container">
-        <h1>Query Apply</h1>
 
         <form name="employee" method="post" action="/sensor">
             <div>
-                <label for="Query">Query</label>
-                <input id="Query" name="Query" type="text" required placeholder="Query"/>
+                <input id="Query" name="Query" type="text" required placeholder=""/>
             </div>
 
             <div>
                 <input type="submit" value="Apply"/>
             </div>
         </form>
-
-        <div class="result">
-            {{#each data}}
-            <p>{{this}}</p>
-            {{/each}}
-        </div>
     </div>
 </body>
 </html>
