@@ -39,12 +39,18 @@ router.post('/', async (req, res) => {
         all_data.push('Sensor Result:');
         all_data.push(JSON.stringify(sensorResult));
 
-        // Extract values from the Query string
+        // Generate timestamp in JavaScript
+        const currentTime = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+        // Extract values from the Query string, excluding the 'now()' part
         const regex = /'([^']*)'|\b(\d+\.\d+|\d+)\b/g;
         let matches, values = [];
         while ((matches = regex.exec(vars.Query))) {
             values.push(matches[1] || matches[2]);
         }
+
+        // Prepend the JavaScript-generated timestamp to the extracted values
+        values.unshift(currentTime);
 
         console.log("Extracted values:", values);
 
@@ -53,15 +59,11 @@ router.post('/', async (req, res) => {
             throw new Error("Incorrect number of arguments extracted from the query.");
         }
 
-        // 현재 시간을 YYYY-MM-DD HH:MM:SS 형식으로 변환
-        const currentTime = new Date();
-        const formattedTime = currentTime.toISOString().replace('T', ' ').substring(0, 19);
-
         // Extract values from the values array
         const [time, SensorId, ax, ay, az, gx, gy, gz, decibel, temp, humi] = values;
 
         // Construct the command with arguments for the Python script
-        const pythonCommand = `python randomf\\randomforest.py ${formattedTime} ${SensorId} ${ax} ${ay} ${az} ${gx} ${gy} ${gz}`;
+        const pythonCommand = `python randomf\\randomforest.py ${time} ${SensorId} ${ax} ${ay} ${az} ${gx} ${gy} ${gz}`;
 
         exec(pythonCommand, async (error, stdout, stderr) => {
             if (error) {
@@ -77,13 +79,6 @@ router.post('/', async (req, res) => {
 
             console.log(`Received prediction: ${prediction}`);
             const [stop, walk, run] = translatePredictionToActivity(prediction);
-
-            const data = {
-                SensorId: SensorId,
-                Stop: stop,
-                Walk: walk,
-                Run: run
-            };
 
             all_data.push(`Python script output: ${stdout}`);
             res.render('sensor', { data: all_data });
