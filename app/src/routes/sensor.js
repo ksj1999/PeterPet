@@ -54,11 +54,15 @@ router.post('/', async (req, res) => {
             throw new Error("Incorrect number of arguments extracted from the query.");
         }
 
+        // 현재 시간을 YYYY-MM-DD HH:MM:SS 형식으로 변환
+        const currentTime = new Date();
+        const formattedTime = currentTime.toISOString().replace('T', ' ').substring(0, 19);
+
         // Extract values from the values array
-        const [time, DogId, ax, ay, az, gx, gy, gz, decibel, temp, humi] = values;
+        const [_, DogId, ax, ay, az, gx, gy, gz, decibel, temp, humi] = values;
 
         // Construct the command with arguments for the Python script
-        const pythonCommand = `python randomf\\randomforest.py ${time} ${DogId} ${ax} ${ay} ${az} ${gx} ${gy} ${gz}`;
+        const pythonCommand = `python randomf\\randomforest.py ${formattedTime} ${DogId} ${ax} ${ay} ${az} ${gx} ${gy} ${gz}`;
 
         exec(pythonCommand, async (error, stdout, stderr) => {
             if (error) {
