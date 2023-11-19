@@ -16,6 +16,8 @@ import regPetRouter from './routes/regPet';
 import uploadRouter from './routes/upload';
 import resultRouter from './routes/result';
 
+import qrRouter from './routes/qr';
+
 const PORT = 5000;
 const app = express();
 
@@ -50,6 +52,8 @@ app.use('/upload', uploadRouter);
 app.use('/result', resultRouter)
 
 app.use('/sensor', sensorRouter);
+
+app.use('/qr', qrRouter);
 
 app.listen(PORT, ()=> {
     console.log(`Server is running at http://localhost:${PORT}`)
