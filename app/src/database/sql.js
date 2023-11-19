@@ -12,6 +12,13 @@ const pool = mysql.createPool({
 
 const promisePool = pool.promise();
 
+// Function to get PetId from SensorId
+export const getPetIdFromSensorId = async (sensorId) => {
+    const query = `SELECT PetId FROM PetSensorLinks WHERE SensorId = ${sensorId}`;
+    const [rows] = await promisePool.query(query);
+    return rows.length > 0 ? rows[0].PetId : null;
+};
+
 //total applyquery
 export const ApplyQuery = {
     applyquery: async(Query) => {

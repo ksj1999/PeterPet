@@ -1,6 +1,6 @@
 import express from 'express';
 import { exec } from 'child_process';
-import { ApplyQuery } from '../database/sql';
+import { ApplyQuery, insertSql, getPetIdFromSensorId } from '../database/sql';
 
 const router = express.Router();
 
@@ -32,14 +32,12 @@ router.post('/', async (req, res) => {
     let all_data = [];
 
     try {
-        // Execute the sensor data insertion query
         const sensorResult = await ApplyQuery.applyquery(vars.Query);
         all_data.push('Sensor Query:');
         all_data.push(vars.Query);
         all_data.push('Sensor Result:');
         all_data.push(JSON.stringify(sensorResult));
 
-        // Extract values from the Query string
         const regex = /'([^']*)'|\b(\d+\.\d+|\d+)\b/g;
         let matches, values = [];
         while ((matches = regex.exec(vars.Query))) {
@@ -48,20 +46,15 @@ router.post('/', async (req, res) => {
 
         console.log("Extracted values:", values);
 
-        // Ensure you have the correct number of arguments
-        if (values.length !== 11) {
+        if (values.length !== 10) {
             throw new Error("Incorrect number of arguments extracted from the query.");
         }
 
-        // 현재 시간을 YYYY-MM-DD HH:MM:SS 형식으로 변환
         const currentTime = new Date();
         const formattedTime = currentTime.toISOString().replace('T', ' ').substring(0, 19);
+        const [sensorId, ax, ay, az, gx, gy, gz, decibel, temp, humi] = values.map(Number);
 
-        // Extract values from the values array
-        const [time, SensorId, ax, ay, az, gx, gy, gz, decibel, temp, humi] = values;
-
-        // Construct the command with arguments for the Python script
-        const pythonCommand = `python randomf\\randomforest.py ${formattedTime} ${SensorId} ${ax} ${ay} ${az} ${gx} ${gy} ${gz}`;
+        const pythonCommand = `python randomf\\randomforest.py ${formattedTime} ${sensorId} ${ax} ${ay} ${az} ${gx} ${gy} ${gz}`;
 
         exec(pythonCommand, async (error, stdout, stderr) => {
             if (error) {
@@ -71,21 +64,34 @@ router.post('/', async (req, res) => {
                 return;
             }
 
-            console.log(`Python script raw output: ${stdout}`); 
+            console.log(`Python script raw output: ${stdout}`);
             const predictionMatch = stdout.trim().match(/\d+/);
             const prediction = predictionMatch ? parseInt(predictionMatch[0], 10) : null;
-
             console.log(`Received prediction: ${prediction}`);
+
             const [stop, walk, run] = translatePredictionToActivity(prediction);
 
-            const data = {
-                SensorId: SensorId,
-                Stop: stop,
-                Walk: walk,
-                Run: run
-            };
+            const petId = await getPetIdFromSensorId(sensorId);
+            if (!petId) {
+                all_data.push('No PetId found for given SensorId.');
+                res.render('sensor', { data: all_data });
+                return;
+            }
 
-            all_data.push(`Python script output: ${stdout}`);
+            try {
+                await insertSql.setActivity({
+                    PetId: petId,
+                    Stop: stop,
+                    Walk: walk,
+                    Run: run
+                });
+                all_data.push('Activity data saved to database.');
+            } catch (dbError) {
+                console.error('Database error:', dbError.message);
+                all_data.push('Error saving activity data to database.');
+            }
+
+            // Render the response with all the data
             res.render('sensor', { data: all_data });
         });
 
