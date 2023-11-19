@@ -30,9 +30,24 @@ CREATE TABLE Pets(
     FOREIGN KEY (OwnerId) REFERENCES Owners(OwnerId)
 );
 
-CREATE TABLE SensorData(
+CREATE TABLE PetSensorLinks(
     SensorId INT NOT NULL,
+    PetId VARCHAR(45) NOT NULL,
+    PRIMARY KEY (SensorId),
+    FOREIGN KEY (PetId) REFERENCES Pets(PetId)
+);
+
+
+CREATE TABLE PetDispenserLinks(
+    DspId INT NOT NULL,
+    PetId VARCHAR(45) NOT NULL,
+    PRIMARY KEY (DspId),
+    FOREIGN KEY (PetId) REFERENCES Pets(PetId)
+);
+
+CREATE TABLE SensorData(
     time DATETIME NOT NULL,
+    SensorId INT NOT NULL,
     ax FLOAT NULL,
     ay FLOAT NULL,
     az FLOAT NULL,
@@ -42,7 +57,8 @@ CREATE TABLE SensorData(
     decibel FLOAT NULL,
     temp FLOAT NULL,
     humi FLOAT NULL,
-    Primary key(SensorId)
+    Primary key(time),
+    FOREIGN KEY (SensorId) REFERENCES PetSensorLinks(SensorId)
 );
 
 
@@ -67,26 +83,17 @@ CREATE TABLE PetCalorieNeeds(
 );
 
 CREATE TABLE FoodDispensers(
-    DspId INT NOT NULL,
     FeedTime DATETIME not null,
     Amount INT NULL,
     EatKcal Float NUll DEFAULT 0,
-    PRIMARY KEY (DspId)
-);
-
-CREATE TABLE PetSensorLinks(
-    SensorId INT NOT NULL,
-    PetId VARCHAR(45) NOT NULL,
-    PRIMARY KEY (SensorId),
-    FOREIGN KEY (SensorId) REFERENCES SensorData(SensorId),
-    FOREIGN KEY (PetId) REFERENCES Pets(PetId)
-);
-
-
-CREATE TABLE PetDispenserLinks(
     DspId INT NOT NULL,
-    PetId VARCHAR(45) NOT NULL,
-    PRIMARY KEY (DspId),
-    FOREIGN KEY (DspId) REFERENCES FoodDispensers(DspId),
-    FOREIGN KEY (PetId) REFERENCES Pets(PetId)
+    Primary Key(FeedTime),
+    FOREIGN KEY (DspId) REFERENCES PetDispenserLinks(DspId)
 );
+
+
+
+-- insert into PetSensorLinks values (
+--     1,
+--     'dung2'
+-- );
