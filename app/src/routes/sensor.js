@@ -58,10 +58,10 @@ router.post('/', async (req, res) => {
         const formattedTime = currentTime.toISOString().replace('T', ' ').substring(0, 19);
 
         // Extract values from the values array
-        const [_, PetId, ax, ay, az, gx, gy, gz, decibel, temp, humi] = values;
+        const [time, PetId, ax, ay, az, gx, gy, gz, decibel, temp, humi] = values;
 
         // Construct the command with arguments for the Python script
-        const pythonCommand = `python randomf\\randomforest.py ${formattedTime} ${PetId} ${ax} ${ay} ${az} ${gx} ${gy} ${gz}`;
+        const pythonCommand = `python randomf\\randomforest.py ${time} ${PetId} ${ax} ${ay} ${az} ${gx} ${gy} ${gz}`;
 
         exec(pythonCommand, async (error, stdout, stderr) => {
             if (error) {
