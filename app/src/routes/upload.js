@@ -1,7 +1,6 @@
 import express from 'express';
 import multer from 'multer';
 import { spawn } from 'child_process';
-import { insertSql } from '../database/sql';
 import fs from 'fs';
 import path from 'path';
 
@@ -43,25 +42,22 @@ const clearUploadsDirectory = () => {
 };
 
 router.get('/', (req, res) => {
-    const dogId = req.session.dogId;
-    res.render('upload', { dogId: dogId });
-    console.log(dogId);
+    const petId = req.session.petId;
+    res.render('upload', { petId: petId });
+    console.log(petId);
     console.log(req.session);
 
 });
 
 router.post('/', upload.array('photos', 13), (req, res) => {
-    const dogId = req.session.dogId;
+    const petId = req.session.petId;
     const photos = req.files;
 
-    if (!dogId || !photos || photos.length === 0) {
-        return res.status(400).send("DogId and photos are required.");
+    if (!petId || !photos || photos.length === 0) {
+        return res.status(400).send("PetId and photos are required.");
     }
 
     const imagePaths = photos.map(photo => photo.path);
-    imagePaths.forEach(Photo => {
-        insertSql.setPhoto(dogId, Photo);
-    });
 
     runPythonScript(imagePaths)
       .then(output => {
