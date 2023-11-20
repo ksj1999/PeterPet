@@ -1,5 +1,3 @@
-# NeedKcal
-
 # db에서 받아와야 하는 변수 (임의 지정)
 weight = 3
 dogid = 'dung'
@@ -63,6 +61,3 @@ amount = round(feed_manager.daily_amount(feed),2)
 eat_kcal = round(amount/frequency,2)
 
 print(need_kcal, act_level, amount, eat_kcal)
-
-
-# db 저장은 뺌
