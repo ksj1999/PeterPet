@@ -68,20 +68,11 @@ router.post('/', upload.array('photos', 13), (req, res) => {
 
         // Python 스크립트 실행 후 uploads 폴더 비우기
         clearUploadsDirectory();
-
-        const data = {
-          PetId: petId,
-          prediction: output,
-      };
-      console.log(data.prediction);
-
-      updateSql.updatePet(data);
       })
       .catch(error => {
         console.error('Error executing Python script:', error);
         res.status(500).send('Error processing image');
       });
-
     
 });
 
