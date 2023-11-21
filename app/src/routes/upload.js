@@ -61,18 +61,26 @@ router.post('/', upload.array('photos', 13), (req, res) => {
     const imagePaths = photos.map(photo => photo.path);
 
     runPythonScript(imagePaths)
-      .then(output => {
-        console.log('Python script output:', output);
+    .then(output => {
+      console.log('Python script output:', output);
 
-        res.render('result', { prediction: output });
+      res.render('result', { prediction: output });
 
-        // Python 스크립트 실행 후 uploads 폴더 비우기
-        clearUploadsDirectory();
-      })
-      .catch(error => {
-        console.error('Error executing Python script:', error);
-        res.status(500).send('Error processing image');
-      });
+      // Python 스크립트 실행 후 uploads 폴더 비우기
+      clearUploadsDirectory();
+
+      const data = {
+        PetId: petId,
+        prediction: output,
+    };
+    console.log(data.prediction);
+
+    updateSql.updatePet(data);
+  })
+  .catch(error => {
+    console.error('Error executing Python script:', error);
+    res.status(500).send('Error processing image');
+  });
     
 });
 
