@@ -59,7 +59,7 @@
 		});
 
 		function tick() {
-			loadingMessage.innerText = "⌛ 스캔 기능을 활성화 중입니다."
+			loadingMessage.innerText = "⌛ Connecting ... ";
 
 			if(video.readyState === video.HAVE_ENOUGH_DATA) {
 				loadingMessage.hidden = true;
@@ -110,7 +110,6 @@
 </script>
 
 <body class="sub_page">
-
   <div class="hero_area">
     <!-- header section strats -->
     <header class="header_section long_section px-0">
@@ -147,24 +146,22 @@
     <!-- end header section -->
   </div>
 
-      <!-- dash section -->
+<!-- qr scan section -->
   <section class="about_section layout_padding long_section">
     <div class="container">
 		<div class="main_page">
-			<main align="center">
-				<div align="center">
+			<main>
+				<input type="button" id="button1" onclick="openCamera();" value="Open WebCam"/>
 					<div id="frame">
 						<div id="loadingMessage">
-							비디오 스트림에 액세스 할 수 없습니다<br/>웹캠이 활성화되어 있는지 확인하십시오
+							Cannot Accecc Vidieo Stream!<br/>
+							Press the 'Open WebCam' button
 						</div>
 					<canvas id="canvas"></canvas>
 				</div>
-				</div>
-				<input type="button" id="button1" onclick="openCamera();" value="카메라 열기" style="width:97%;height:30px"/>
+				<div id="test">
+				<h3> QR Sacn Result</h3>
 				<br/>
-				
-				<div id="test" width="100%">
-				<h2>QR 코드 스캔 결과</h2>
 					<div id="output">
 						<div id="outputMessage"></div>
 						<div id="outputLayer" hidden>
@@ -172,6 +169,7 @@
 						</div>
 					</div>
 				</div>
+				<br/>
 				 <div class="btn-box">
 					<a href="/upload" class="btn1">
                         SIGN UP
@@ -180,7 +178,8 @@
 			</main>
 		</div>
 	</div>
-</section>
-  </div>
+	</section>
+</div>
+
 </body>
 </html>
