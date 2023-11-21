@@ -19,7 +19,7 @@ float decibel;
 String ssid = "Sy";
 String password = "01075799717";
 String serverIP = "210.111.178.93";
-int serverPort = 80;
+int serverPort = 8000;
 
 bool waitForResponse(const char* expectedResponse, unsigned long timeout, bool printResponse = true) {
   unsigned long startTime = millis();

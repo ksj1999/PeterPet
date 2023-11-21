@@ -73,13 +73,14 @@ router.post('/', upload.array('photos', 13), (req, res) => {
           PetId: petId,
           prediction: output,
       };
-      updateSql.updateDog(data);
 
+      updateSql.updateDog(data);
       })
       .catch(error => {
         console.error('Error executing Python script:', error);
         res.status(500).send('Error processing image');
       });
+
     
 });
 
