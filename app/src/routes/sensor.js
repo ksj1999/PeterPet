@@ -1,6 +1,7 @@
 import express from 'express';
 import { exec } from 'child_process';
 import { ApplyQuery, insertSql, getPetIdFromSensorId } from '../database/sql';
+import { CalorieCalculator, FeedManager } from './feedCalculator'; // Adjust the path if necessary
 
 const router = express.Router();
 
@@ -101,6 +102,21 @@ router.post('/', async (req, res) => {
         all_data.push('Please check.');
         res.render('sensor', { data: all_data });
     }
+});
+
+// New route for calculating feed
+router.post('/calculateFeed', (req, res) => {
+    const { acttime, dogid, weight, bcs, nowKcal, feed, frequency } = req.body;
+
+    const calorieCalculator = new CalorieCalculator(acttime, dogid, weight, bcs);
+    const feedManager = new FeedManager(acttime, dogid, weight, bcs, nowKcal);
+
+    const needKcal = Math.round(calorieCalculator.calculateDer(nowKcal)[0], 2);
+    const actLevel = calorieCalculator.calculateDer(nowKcal)[1];
+    const amount = Math.round(feedManager.dailyAmount(feed), 2);
+    const eatKcal = Math.round(amount / frequency, 2);
+
+    res.json({ needKcal, actLevel, amount, eatKcal });
 });
 
 module.exports = router;
