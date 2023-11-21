@@ -90,9 +90,8 @@ export const insertSql = {
 
 export const updateSql = {
     updatePet: async (data) => {
-        const sanitizedPrediction = data.prediction.replace(/\r?\n/g, ''); // Remove \r and \n
         const sql = 'UPDATE Pets SET BCS = ? WHERE PetId = ?';
-        const values = [sanitizedPrediction, data.PetId];
+        const values = [data.prediction, data.PetId];
         console.log(data);
         await promisePool.query(sql, values);
     },
