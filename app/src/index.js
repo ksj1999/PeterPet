@@ -76,7 +76,7 @@ app.use('/qr', qrRouter);
 
 // Schedule task to run at 10:50:30 AM and PM every day 
 // sec, min, hour
-cron.schedule('59 24 23,11 * * *', async () => {
+cron.schedule('59 01 00,11 * * *', async () => {
   console.log('Starting scheduled feed calculation...');
 
   try {
@@ -96,8 +96,9 @@ cron.schedule('59 24 23,11 * * *', async () => {
           const feedManager = new FeedManager(new Date(), pet.PetId, pet.Weight, pet.BCS, der);
           const amount = feedManager.dailyAmount(feedEnergyContent);
           console.log(`Calculated feed amount for Pet ID ${pet.PetId}: ${amount} grams`);
-
-          await insertSql.setFoodDispenserAmount({ PetId: pet.PetId, Amount: amount }); // Adjust this method in your insertSql object
+      
+          // Save the calculated amount to the FoodDispensers table
+          await insertSql.setFoodDispenserAmount({ PetId: pet.PetId, Amount: amount });
           console.log(`Feed amount for Pet ID ${pet.PetId} saved to FoodDispensers table.`);
       }
 

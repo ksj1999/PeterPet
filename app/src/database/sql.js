@@ -60,9 +60,9 @@ export const selectSql = {
     getKcalSumLast12Hours: async (petId) => {
         const sql = `SELECT SUM(Kcal) as TotalKcal FROM PetActivities WHERE PetId = '${petId}' AND ActTime >= NOW() - INTERVAL 12 HOUR`;
         const [result] = await promisePool.query(sql);
-        console.log(`Total Kcal for Pet ID ${petId} in the last 12 hours:`, result.length > 0 && result[0].TotalKcal ? result[0].TotalKcal : 0);
-        return result.length > 0 && result[0].TotalKcal ? result[0].TotalKcal : 0;
-        
+        const totalKcal = result.length > 0 && result[0].TotalKcal ? result[0].TotalKcal : 0;
+        console.log(`Total Kcal for Pet ID ${petId} in the last 12 hours: ${totalKcal}`);
+        return totalKcal;
     },
     getAllPets: async () => {
         const sql = `SELECT PetId, Weight, BCS FROM Pets`;
@@ -106,9 +106,10 @@ export const insertSql = {
         await promisePool.query(sql, values);
     },
     setFoodDispenserAmount: async (data) => {
-        const sql = `INSERT INTO FoodDispensers (FeedTime, Amount, DspId) VALUES (NOW(), ?, (SELECT DspId FROM PetDispenserLinks WHERE PetId = ?))`;
+        const sql = `INSERT INTO FoodDispensers (FeedTime, Amount, DspId) VALUES (NOW(), ?, ?)`;
         await promisePool.query(sql, [data.Amount, data.PetId]);
     },
+    
 
     
 
