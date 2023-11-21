@@ -87,3 +87,12 @@ export const insertSql = {
             await promisePool.query(sql);
         },
 };
+
+export const updateSal= {
+    updatePet: async (data) => {
+        const sql = 'UPDATE Pets SET BSC = ? WHERE PetId = ?';
+        const values = [data.prediction, data.PetId];
+        console.log(data);
+        await promisePool.query(sql, values);
+    },
+};
