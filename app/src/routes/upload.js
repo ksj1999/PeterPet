@@ -3,6 +3,7 @@ import multer from 'multer';
 import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
+import { updateSql } from "../database/sql";
 
 const router = express.Router();
 
@@ -62,6 +63,11 @@ router.post('/', upload.array('photos', 13), (req, res) => {
     runPythonScript(imagePaths)
       .then(output => {
         console.log('Python script output:', output);
+        updateSql.updateDog({
+          PetId: petId,
+          prediction: output,
+      });
+
         res.render('result', { prediction: output });
 
         // Python 스크립트 실행 후 uploads 폴더 비우기
@@ -71,6 +77,8 @@ router.post('/', upload.array('photos', 13), (req, res) => {
         console.error('Error executing Python script:', error);
         res.status(500).send('Error processing image');
       });
+
+    
 });
 
 
