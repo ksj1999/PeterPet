@@ -63,7 +63,7 @@ router.post('/', upload.array('photos', 13), (req, res) => {
     runPythonScript(imagePaths)
       .then(output => {
         console.log('Python script output:', output);
-        updateSql.updateDog({
+        updateSql.updatePet({
           PetId: petId,
           prediction: output,
       });
