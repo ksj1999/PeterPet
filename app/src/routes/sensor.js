@@ -1,6 +1,6 @@
 import express from 'express';
 import { exec } from 'child_process';
-import { ApplyQuery, insertSql, getPetIdFromSensorId } from '../database/sql';
+import { ApplyQuery, insertSql, getPetIdFromSensorId, selectSql, updateSql } from '../database/sql';
 import { CalorieCalculator, FeedManager } from './feedCalculator'; // Adjust the path if necessary
 
 const router = express.Router();
@@ -21,6 +21,15 @@ function translatePredictionToActivity(prediction) {
         }
     }
     return [stop, walk, run];
+
+}
+
+function calculateRER(weight) {
+    return Math.round(70 * Math.pow(weight, 0.75), 2);
+}
+
+function calculateSecRER(rer) {
+    return 86400 * rer;
 }
 
 router.get('/', (_req, res) => {
@@ -86,6 +95,22 @@ router.post('/', async (req, res) => {
                     Walk: walk,
                     Run: run
                 });
+
+                const weight = await selectSql.getPetWeight(petId);
+                if (weight && lastActivityTime) {
+                    const lastActivityDate = new Date(lastActivityTime);
+                    const currentTime = new Date();
+                    const timeDiff = (currentTime - lastActivityDate) / 1000; // Convert to seconds
+    
+                    const rer = calculateRER(weight);
+                    const sec_rer = calculateSecRER(rer);
+                    let activityFactor = (stop === 1) ? 1 : (walk === 1) ? 5 : 10;
+                    const kcal = sec_rer * timeDiff * activityFactor;
+    
+                    // Update Kcal value in the database
+                    await updateSql.updateKcal(petId, kcal);
+                }
+
                 all_data.push('Activity data saved to database.');
             } catch (dbError) {
                 console.error('Database error:', dbError.message);
@@ -105,18 +130,29 @@ router.post('/', async (req, res) => {
 });
 
 // New route for calculating feed
-router.post('/calculateFeed', (req, res) => {
-    const { acttime, dogid, weight, bcs, nowKcal, feed, frequency } = req.body;
+router.post('/feedCalculator', async (req, res) => {
+    const { petId } = req.body;
 
-    const calorieCalculator = new CalorieCalculator(acttime, dogid, weight, bcs);
-    const feedManager = new FeedManager(acttime, dogid, weight, bcs, nowKcal);
+    try {
+        const petDetails = await selectSql.getPetDetails(petId);
+        const nowKcal = await selectSql.getKcalSumLast12Hours(petId);
 
-    const needKcal = Math.round(calorieCalculator.calculateDer(nowKcal)[0], 2);
-    const actLevel = calorieCalculator.calculateDer(nowKcal)[1];
-    const amount = Math.round(feedManager.dailyAmount(feed), 2);
-    const eatKcal = Math.round(amount / frequency, 2);
+        const frequency = 2;
+        const feed = 3785; // kcal/g
 
-    res.json({ needKcal, actLevel, amount, eatKcal });
+        const calorieCalculator = new CalorieCalculator(new Date(), petId, petDetails.Weight, petDetails.BCS);
+        const feedManager = new FeedManager(new Date(), petId, petDetails.Weight, petDetails.BCS, nowKcal);
+
+        const needKcal = Math.round(calorieCalculator.calculateDer(nowKcal)[0], 2);
+        const actLevel = calorieCalculator.calculateDer(nowKcal)[1];
+        const amount = Math.round(feedManager.dailyAmount(feed), 2);
+        const eatKcal = Math.round(amount / frequency, 2);
+
+        res.json({ needKcal, actLevel, amount, eatKcal });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 module.exports = router;

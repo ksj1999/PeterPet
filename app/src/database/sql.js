@@ -39,7 +39,37 @@ export const selectSql = {
         const sql = `select * from owners`;
         const [result] = await promisePool.query(sql);
         return result;
-    }
+    },
+    getPetWeight: async (petId) => {
+        const sql = `SELECT Weight FROM Pets WHERE PetId = '${petId}'`;
+        const [result] = await promisePool.query(sql);
+        return result.length > 0 ? result[0].Weight : null;
+    },
+    getLastActivityTime: async (petId) => {
+        const sql = `SELECT MAX(ActTime) as LastActivityTime FROM PetActivities WHERE PetId = '${petId}'`;
+        const [result] = await promisePool.query(sql);
+        return result.length > 0 && result[0].LastActivityTime ? result[0].LastActivityTime : null;
+    },
+
+    getPetDetails: async (petId) => {
+        const sql = `SELECT Weight, Neuter, BCS FROM Pets WHERE PetId = '${petId}'`;
+        const [result] = await promisePool.query(sql);
+        return result.length > 0 ? result[0] : null;
+    },
+
+    getKcalSumLast12Hours: async (petId) => {
+        const sql = `SELECT SUM(Kcal) as TotalKcal FROM PetActivities WHERE PetId = '${petId}' AND ActTime >= NOW() - INTERVAL 12 HOUR`;
+        const [result] = await promisePool.query(sql);
+        console.log(`Total Kcal for Pet ID ${petId} in the last 12 hours:`, result.length > 0 && result[0].TotalKcal ? result[0].TotalKcal : 0);
+        return result.length > 0 && result[0].TotalKcal ? result[0].TotalKcal : 0;
+        
+    },
+    getAllPets: async () => {
+        const sql = `SELECT PetId, Weight, BCS FROM Pets`;
+        const [result] = await promisePool.query(sql);
+        return result;
+    },
+    
 }
 
 // insert query
@@ -75,6 +105,12 @@ export const insertSql = {
         console.log(data);
         await promisePool.query(sql, values);
     },
+    setFoodDispenserAmount: async (data) => {
+        const sql = `INSERT INTO FoodDispensers (FeedTime, Amount, DspId) VALUES (NOW(), ?, (SELECT DspId FROM PetDispenserLinks WHERE PetId = ?))`;
+        await promisePool.query(sql, [data.Amount, data.PetId]);
+    },
+
+    
 
     //Insert into Activity values ('2023-11-06 10:30:00', 'dung2', 0, 1, 0, 1);
     setActivity: async (data) => {
@@ -95,4 +131,11 @@ export const updateSql = {
         console.log(data);
         await promisePool.query(sql, values);
     },
+
+    updateKcal: async (petId, kcal) => {
+        const sql = 'UPDATE PetActivities SET Kcal = ? WHERE PetId = ?';
+        const values = [kcal, petId];
+        await promisePool.query(sql, values);
+    },
+    
 };

@@ -1,12 +1,14 @@
 class CalorieCalculator {
-    constructor(acttime, dogid, weight, bcs) {
+    constructor(acttime, petId, weight, bcs) {
         this.time = acttime;
-        this.id = dogid;
+        this.id = petId;
         this.rer = Math.round(70 * Math.pow(weight, 0.75) * 100) / 100;
         this.bcs = bcs;
     }
 
     calculateDer(nowKcal) {
+        console.log(`Calculating DER. RER: ${this.rer}, nowKcal: ${nowKcal}, BCS: ${this.bcs}`);
+
         let actLevel;
         if (nowKcal < this.rer / 5) {
             actLevel = 0;
@@ -34,19 +36,25 @@ class CalorieCalculator {
                     break;
             }
         }
+        console.log(`Calculated DER: ${der}, Activity Level: ${actLevel}`);
 
         return [der, actLevel];
     }
 }
 
 class FeedManager {
-    constructor(acttime, dogid, weight, bcs, nowKcal) {
-        this.calorieCalculator = new CalorieCalculator(acttime, dogid, weight, bcs);
+    
+    constructor(acttime, petId, weight, bcs, nowKcal) {
+        this.calorieCalculator = new CalorieCalculator(acttime, petId, weight, bcs);
         this.calDer = this.calorieCalculator.calculateDer(nowKcal)[0];
     }
 
     dailyAmount(feed) {
+        console.log(`Calculating daily amount. DER: ${this.calDer}, Feed energy content: ${feed}`);
+
         const amountFeed = this.calDer / feed * 1000;
+        console.log(`Calculated feed amount: ${amountFeed}`);
+
         return amountFeed;
     }
 }
