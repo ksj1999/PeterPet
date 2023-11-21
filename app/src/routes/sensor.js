@@ -81,7 +81,7 @@ router.post('/', async (req, res) => {
 
             const [stop, walk, run] = translatePredictionToActivity(prediction);
 
-            const petId = await getPetIdFromSensorId(sensorId);
+            const petId = await getPetIdFromSensorId(petId);
             if (!petId) {
                 all_data.push('No PetId found for given SensorId.');
                 res.render('sensor', { data: all_data });

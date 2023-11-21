@@ -1,4 +1,6 @@
 import mysql from 'mysql2';
+import { spawn } from 'child_process';
+
 
 require("dotenv").config();
 
@@ -107,7 +109,26 @@ export const insertSql = {
     },
     setFoodDispenserAmount: async (data) => {
         const sql = `INSERT INTO FoodDispensers (FeedTime, Amount, DspId) VALUES (NOW(), ?, ?)`;
-        await promisePool.query(sql, [data.Amount, data.PetId]);
+        await promisePool.query(sql, [data.Amount, data.DspId]);
+    },
+    setFoodDispenserAmount: async (data) => {
+        const sql = `INSERT INTO FoodDispensers (FeedTime, Amount, DspId) VALUES (NOW(), ?, ?)`;
+        await promisePool.query(sql, [data.Amount, data.DspId]);
+        
+        // Execute the Python script after the SQL query
+        const pythonProcess = spawn('python', ['./fooddispenser/fooddisp.py', data.PetId, data.Amount, data.DspId]);
+
+        pythonProcess.stdout.on('data', (data) => {
+            console.log(`stdout: ${data}`);
+        });
+
+        pythonProcess.stderr.on('data', (data) => {
+            console.error(`stderr: ${data}`);
+        });
+
+        pythonProcess.on('close', (code) => {
+            console.log(`child process exited with code ${code}`);
+        });
     },
     
 

@@ -23,6 +23,7 @@ import { selectSql } from './database/sql'; // Adjust the path according to your
 import { insertSql } from './database/sql'; // Adjust the path according to your project structure
 
 
+
 const expressSanitizer = require("express-sanitizer");
 
 // fs and https 모듈 가져오기
@@ -76,7 +77,7 @@ app.use('/qr', qrRouter);
 
 // Schedule task to run at 10:50:30 AM and PM every day 
 // sec, min, hour
-cron.schedule('59 01 00,11 * * *', async () => {
+cron.schedule('59 55 01,11 * * *', async () => {
   console.log('Starting scheduled feed calculation...');
 
   try {
@@ -96,9 +97,9 @@ cron.schedule('59 01 00,11 * * *', async () => {
           const feedManager = new FeedManager(new Date(), pet.PetId, pet.Weight, pet.BCS, der);
           const amount = feedManager.dailyAmount(feedEnergyContent);
           console.log(`Calculated feed amount for Pet ID ${pet.PetId}: ${amount} grams`);
-      
+       
           // Save the calculated amount to the FoodDispensers table
-          await insertSql.setFoodDispenserAmount({ PetId: pet.PetId, Amount: amount });
+          await insertSql.setFoodDispenserAmount({ PetId: pet.PetId, Amount: amount, DspId: 1 });
           console.log(`Feed amount for Pet ID ${pet.PetId} saved to FoodDispensers table.`);
       }
 
@@ -113,7 +114,7 @@ app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
   });
   
-  // https 의존성으로 certificate와 private key로 새로운 서버를 시작
+  // https 의존성으로 certificate와 private key로 새로운 서버를 시작w
   https.createServer(options, app).listen(5000, () => {
     console.log(`HTTPS server started on port 5000`);
   });
