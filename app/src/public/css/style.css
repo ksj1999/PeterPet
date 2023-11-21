@@ -520,5 +520,28 @@ div#outputLayer {
   text-align:left;
 }
 canvas {
-  width:100%;
+  width:30%;
+}
+
+
+/* content */
+
+.contact_section #imagePreviews {
+  display: flex;
+  flex-wrap: nowrap; /* Change flex-wrap to nowrap */
+  overflow-x: auto; /* Add overflow-x to enable horizontal scrolling if needed */
+  margin-top: 20px;
+}
+
+.contact_section .preview-container {
+  width: 48%; /* Set the width of the preview container as a percentage for two columns */
+  margin: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.contact_section .preview-image {
+  width: 100%;
+  height: auto;
+  display: block;
 }
