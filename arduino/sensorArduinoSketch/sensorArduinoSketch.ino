@@ -167,7 +167,7 @@ void loop() {
 
   Serial.println("----------------------------------------------------");
 
-  delay(5000);
+  delay(2000);
 
   Serial1.println("POST /sensor HTTP/1.1");
   Serial1.println("Host: " + serverIP);
@@ -182,7 +182,7 @@ void loop() {
     Serial.write(Serial1.read());
     Serial.print(".");
   }
-  delay(20000);
+  delay(10000);
 
   if (Serial1.find("ERROR")) {
     Serial.println("Send error");
