@@ -66,8 +66,8 @@ The platform is an **integrated pet care management service** that leverages **A
 
 ## Team Members  
 
-- **Team Leader:** Seong Jun Kwon – Algorithm development & automated feeding system  
-- **Team Member:** Seoyoung Yun – Data collection & communication management  
+- **Team Leader:** Seong Jun Kwon – AI development, Pet Health Data collection & automated feeding system  
+- **Team Member:** Seoyoung Yun – Pet Activity Data collection & communication management  
 - **Team Member:** Minseon Kim – Dashboard implementation  
 - **Team Member:** Hyunji Park – Algorithm development  
 
@@ -75,6 +75,7 @@ The platform is an **integrated pet care management service** that leverages **A
 
 ## Acknowledgements  
 
-Developed as part of the **Advantech Innoworks Program** in collaboration with **Inha University**.  
+Developed as part of the **2023Advantech Innoworks Program** in collaboration with **Inha University**.  
 
 📌 **Project Link:** [PeterPet GitHub Repository](https://github.com/AdvantechPeterPet/PeterPet)  
+📌 **Video Link:** https://www.dropbox.com/scl/fi/w5e5q2hliv9yaw7sbeezr/advantech-innoworks-2023-En.mp4?rlkey=torxdzcdvc3hb5jz22dqzfu2o&e=1&dl=0
